@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aiolos.library.dao.UserDao">
+  <resultMap id="BaseResultMap" type="com.aiolos.library.pojo.User">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="sex" jdbcType="CHAR" property="sex" />
+    <result column="phone" jdbcType="CHAR" property="phone" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="head_portrait" jdbcType="VARCHAR" property="headPortrait" />
+    <result column="head_portrait_big" jdbcType="VARCHAR" property="headPortraitBig" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="district" jdbcType="VARCHAR" property="district" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="root" jdbcType="BIT" property="root" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="role" jdbcType="LONGVARCHAR" property="role" />
+  </resultMap>
+
+  <select id="haveRootUser" resultType="boolean">
+    select if(count(1), true, false) from tb_user where root = 1;
+  </select>
+
+  <select id="searchUserPermissions" parameterType="String" resultType="String">
+    select p.permission_name
+    from tb_user u
+    join tb_role r
+    on json_contains(u.role, cast(r.id as char))
+    join tb_permission p
+    on json_contains(r.permissions, cast(p.id as char))
+    where u.id = #{userId} and u.status = 1
+  </select>
+</mapper>
