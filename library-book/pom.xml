@@ -9,23 +9,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>library-service-api</artifactId>
+    <artifactId>library-book</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.aiolos</groupId>
-            <artifactId>library-model</artifactId>
+            <artifactId>library-service-api</artifactId>
             <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
-            <version>2.2.6.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-            <version>2.2.6.RELEASE</version>
         </dependency>
     </dependencies>
 </project>

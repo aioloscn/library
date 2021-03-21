@@ -8,6 +8,7 @@ import com.aiolos.common.exception.CustomizeException;
 import com.aiolos.common.utils.CommonUtils;
 import com.aiolos.library.dao.UserDao;
 import com.aiolos.library.pojo.User;
+import com.aiolos.library.service.BaseService;
 import com.aiolos.library.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -29,14 +31,11 @@ import java.util.Set;
 @Slf4j
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class UserServiceImpl implements UserService {
-
-    private final IdGeneratorSnowflake snowflake;
+public class UserServiceImpl extends BaseService implements UserService {
 
     private final UserDao userDao;
 
-    public UserServiceImpl(IdGeneratorSnowflake snowflake, UserDao userDao) {
-        this.snowflake = snowflake;
+    public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
     }
 
@@ -65,7 +64,7 @@ public class UserServiceImpl implements UserService {
         return userDao.selectOne(wrapper);
     }
 
-    @Transactional(propagation = Propagation.NESTED, rollbackFor = {CustomizeException.class})
+    @Transactional(propagation = Propagation.NESTED, rollbackFor = CustomizeException.class)
     @Override
     public User create(String phone) throws CustomizeException {
 
@@ -79,8 +78,6 @@ public class UserServiceImpl implements UserService {
         user.setGmtModified(new Date());
 
         int resultCount = userDao.insert(user);
-        User user1 = userDao.selectById(user.getId());
-        System.out.println(user1.toString());
         if (resultCount != 1) {
             try {
                 throw new RuntimeException();
@@ -90,5 +87,10 @@ public class UserServiceImpl implements UserService {
         }
 
         return user;
+    }
+
+    @Override
+    public List<User> searchBatchIds(List<String> ids) {
+        return userDao.selectBatchIds(ids);
     }
 }

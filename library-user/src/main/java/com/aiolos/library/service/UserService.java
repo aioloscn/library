@@ -1,8 +1,10 @@
 package com.aiolos.library.service;
 
 import com.aiolos.common.exception.CustomizeException;
+import com.aiolos.common.response.CommonResponse;
 import com.aiolos.library.pojo.User;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -39,5 +41,18 @@ public interface UserService {
      */
     User queryPhoneIsExists(String phone);
 
+    /**
+     * 创建用户信息
+     * @param phone
+     * @return
+     * @throws CustomizeException
+     */
     User create(String phone) throws CustomizeException;
+
+    /**
+     * 根据主键集合查询相应的数据
+     * @param ids
+     * @return
+     */
+    List<User> searchBatchIds(List<String> ids);
 }

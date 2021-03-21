@@ -11,19 +11,19 @@ import com.aiolos.library.controller.user.UserControllerApi;
 import com.aiolos.library.pojo.User;
 import com.aiolos.library.pojo.bo.RegisterLoginBO;
 import com.aiolos.library.service.UserService;
-import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author Aiolos
  * @date 2021/3/19 6:19 上午
  */
-@Api
 @Slf4j
 @RestController
 public class UserController extends BaseController implements UserControllerApi {
@@ -104,7 +104,10 @@ public class UserController extends BaseController implements UserControllerApi 
     }
 
     @Override
-    public CommonResponse getUserInfo(String id) {
+    public CommonResponse getById(String id) {
+        if (StringUtils.isBlank(id)) {
+            return CommonResponse.error(ErrorEnum.USER_DOES_NOT_EXIST);
+        }
         return CommonResponse.ok(userService.searchById(id));
     }
 
@@ -113,5 +116,17 @@ public class UserController extends BaseController implements UserControllerApi 
         String userId = jwtUtil.getUserId(token);
         redis.delete(userId);
         return CommonResponse.ok();
+    }
+
+    @Override
+    public CommonResponse searchBatchIds(List<String> ids) {
+        List<String> notExistIds = new LinkedList<>();
+        ids.forEach(id -> {
+            if (StringUtils.isBlank(id)) {
+                notExistIds.add(id);
+            }
+        });
+        String msg = notExistIds.size() > 0 ? notExistIds.toString() + " " + ErrorEnum.USER_DOES_NOT_EXIST : StringUtils.EMPTY;
+        return CommonResponse.ok(msg, userService.searchBatchIds(ids));
     }
 }
