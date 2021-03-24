@@ -1,0 +1,35 @@
+server:
+  port: 8095
+  tomcat:
+    uri-encoding: UTF-8
+    threads:
+      max: 200
+      min-spare: 30
+    connection-timeout: 5000
+
+spring:
+  profiles:
+    active: dev
+  jpa:
+    open-in-view: false   # pom不添加jpa包会报程序包javax.persistence不存在，项目中不用jpa相关功能，关闭项目启动时的jpa警告
+mapper:
+  mappers: com.aiolos.library.common.MyMapper
+  not-empty: false        # 在进行数据库操作的时候，判断表达式 username != null, 是否追加 username != ''
+  identity: MYSQL
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.aiolos.library.pojo
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+logging:
+  level:
+    root: info
+    org.springframework.data.convert.CustomConversions: error # 取消服务启动时的某些警告
+
+library:
+  jwt:
+    secret: librarysecretsalt
+    expire: 7
+    cache-expire: 10

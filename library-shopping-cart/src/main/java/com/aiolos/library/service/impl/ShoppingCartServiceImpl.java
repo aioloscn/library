@@ -14,7 +14,6 @@ import com.aiolos.library.pojo.bo.ShoppingCartUpdateBO;
 import com.aiolos.library.service.BaseService;
 import com.aiolos.library.service.ShoppingCartService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -42,7 +41,7 @@ public class ShoppingCartServiceImpl extends BaseService implements ShoppingCart
     public ShoppingCart add(ShoppingCartInsertBO shoppingCartInsertBO) throws CustomizeException {
 
         ShoppingCart shoppingCart = BeanUtil.copyProperties(shoppingCartInsertBO, ShoppingCart.class);
-        shoppingCart.setId(snowflake.nextIdStr());
+        shoppingCart.setId(idWorker.nextId());
         shoppingCart.setStatus(BookStatus.ON_THE_SHELVES.getType());
         shoppingCart.setGmtCreate(new Date());
         shoppingCart.setGmtModified(new Date());
@@ -59,7 +58,7 @@ public class ShoppingCartServiceImpl extends BaseService implements ShoppingCart
     }
 
     @Override
-    public List<ShoppingCart> getByUserId(String userId) {
+    public List<ShoppingCart> getByUserId(Long userId) {
         QueryWrapper wrapper = new QueryWrapper();
         wrapper.eq("userId", userId);
         wrapper.eq("status", ShoppingCartStatus.NORMAL.getType());

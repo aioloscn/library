@@ -12,7 +12,7 @@ public class Module implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "SELECT LAST_INSERT_ID()")
-    private String id;
+    private Long id;
 
     /**
      * 模块编号
@@ -33,7 +33,7 @@ public class Module implements Serializable {
      *
      * @return id - 主键
      */
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
@@ -42,8 +42,8 @@ public class Module implements Serializable {
      *
      * @param id 主键
      */
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+    public void setId(Long id) {
+        this.id = id;
     }
 
     /**

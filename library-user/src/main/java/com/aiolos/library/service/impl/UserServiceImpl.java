@@ -1,6 +1,5 @@
 package com.aiolos.library.service.impl;
 
-import com.aiolos.common.config.IdGeneratorSnowflake;
 import com.aiolos.common.enums.ErrorEnum;
 import com.aiolos.common.enums.Sex;
 import com.aiolos.common.enums.UserStatus;
@@ -40,7 +39,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    public User searchById(String userId) {
+    public User searchById(Long userId) {
         QueryWrapper wrapper = new QueryWrapper();
         wrapper.eq("id", userId);
         wrapper.eq("status", UserStatus.ACTIVE.getType());
@@ -48,7 +47,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    public Set<String> searchUserPermissions(String userId) {
+    public Set<String> searchUserPermissions(Long userId) {
         return userDao.searchUserPermissions(userId);
     }
 
@@ -69,7 +68,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     public User create(String phone) throws CustomizeException {
 
         User user = new User();
-        user.setId(snowflake.nextIdStr());
+        user.setId(idWorker.nextId());
         user.setPhone(phone);
         user.setNickname("用户" + CommonUtils.hidePhoneNo(phone));
         user.setSex(Sex.secret.getValue());
@@ -87,10 +86,5 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
 
         return user;
-    }
-
-    @Override
-    public List<User> searchBatchIds(List<String> ids) {
-        return userDao.selectBatchIds(ids);
     }
 }

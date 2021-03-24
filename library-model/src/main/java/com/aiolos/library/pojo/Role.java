@@ -12,7 +12,7 @@ public class Role implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "SELECT LAST_INSERT_ID()")
-    private String id;
+    private Long id;
 
     /**
      * 角色名称
@@ -32,7 +32,7 @@ public class Role implements Serializable {
      *
      * @return id - 主键
      */
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
@@ -41,8 +41,8 @@ public class Role implements Serializable {
      *
      * @param id 主键
      */
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+    public void setId(Long id) {
+        this.id = id;
     }
 
     /**

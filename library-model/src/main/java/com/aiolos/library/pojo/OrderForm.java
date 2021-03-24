@@ -12,28 +12,44 @@ public class OrderForm implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "SELECT LAST_INSERT_ID()")
-    private String id;
+    private Long id;
+
+    /**
+     * 订单号
+     */
+    @Column(name = "order_no")
+    private Long orderNo;
 
     /**
      * 书籍主键
      */
     @Column(name = "book_id")
-    private String bookId;
+    private Long bookId;
 
     /**
      * 用户主键
      */
     @Column(name = "user_id")
-    private String userId;
+    private Long userId;
 
     /**
-     * 总数量
+     * 商品数量
+     */
+    private Integer quantity;
+
+    /**
+     * 商品金额
+     */
+    private BigDecimal amount;
+
+    /**
+     * 订单总数量
      */
     @Column(name = "total_quantity")
     private Integer totalQuantity;
 
     /**
-     * 总金额
+     * 订单总金额
      */
     @Column(name = "total_amount")
     private BigDecimal totalAmount;
@@ -41,7 +57,7 @@ public class OrderForm implements Serializable {
     /**
      * 收货地址
      */
-    @Column(name = "shipping address")
+    @Column(name = "shipping_address")
     private String shippingAddress;
 
     /**
@@ -68,7 +84,7 @@ public class OrderForm implements Serializable {
      *
      * @return id - 主键
      */
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
@@ -77,8 +93,26 @@ public class OrderForm implements Serializable {
      *
      * @param id 主键
      */
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    /**
+     * 获取订单号
+     *
+     * @return order_no - 订单号
+     */
+    public Long getOrderNo() {
+        return orderNo;
+    }
+
+    /**
+     * 设置订单号
+     *
+     * @param orderNo 订单号
+     */
+    public void setOrderNo(Long orderNo) {
+        this.orderNo = orderNo;
     }
 
     /**
@@ -86,7 +120,7 @@ public class OrderForm implements Serializable {
      *
      * @return book_id - 书籍主键
      */
-    public String getBookId() {
+    public Long getBookId() {
         return bookId;
     }
 
@@ -95,8 +129,8 @@ public class OrderForm implements Serializable {
      *
      * @param bookId 书籍主键
      */
-    public void setBookId(String bookId) {
-        this.bookId = bookId == null ? null : bookId.trim();
+    public void setBookId(Long bookId) {
+        this.bookId = bookId;
     }
 
     /**
@@ -104,7 +138,7 @@ public class OrderForm implements Serializable {
      *
      * @return user_id - 用户主键
      */
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
@@ -113,41 +147,77 @@ public class OrderForm implements Serializable {
      *
      * @param userId 用户主键
      */
-    public void setUserId(String userId) {
-        this.userId = userId == null ? null : userId.trim();
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     /**
-     * 获取总数量
+     * 获取商品数量
      *
-     * @return total_quantity - 总数量
+     * @return quantity - 商品数量
+     */
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    /**
+     * 设置商品数量
+     *
+     * @param quantity 商品数量
+     */
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    /**
+     * 获取商品金额
+     *
+     * @return amount - 商品金额
+     */
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    /**
+     * 设置商品金额
+     *
+     * @param amount 商品金额
+     */
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    /**
+     * 获取订单总数量
+     *
+     * @return total_quantity - 订单总数量
      */
     public Integer getTotalQuantity() {
         return totalQuantity;
     }
 
     /**
-     * 设置总数量
+     * 设置订单总数量
      *
-     * @param totalQuantity 总数量
+     * @param totalQuantity 订单总数量
      */
     public void setTotalQuantity(Integer totalQuantity) {
         this.totalQuantity = totalQuantity;
     }
 
     /**
-     * 获取总金额
+     * 获取订单总金额
      *
-     * @return total_amount - 总金额
+     * @return total_amount - 订单总金额
      */
     public BigDecimal getTotalAmount() {
         return totalAmount;
     }
 
     /**
-     * 设置总金额
+     * 设置订单总金额
      *
-     * @param totalAmount 总金额
+     * @param totalAmount 订单总金额
      */
     public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
@@ -156,7 +226,7 @@ public class OrderForm implements Serializable {
     /**
      * 获取收货地址
      *
-     * @return shipping address - 收货地址
+     * @return shipping_address - 收货地址
      */
     public String getShippingAddress() {
         return shippingAddress;
@@ -232,8 +302,11 @@ public class OrderForm implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", orderNo=").append(orderNo);
         sb.append(", bookId=").append(bookId);
         sb.append(", userId=").append(userId);
+        sb.append(", quantity=").append(quantity);
+        sb.append(", amount=").append(amount);
         sb.append(", totalQuantity=").append(totalQuantity);
         sb.append(", totalAmount=").append(totalAmount);
         sb.append(", shippingAddress=").append(shippingAddress);

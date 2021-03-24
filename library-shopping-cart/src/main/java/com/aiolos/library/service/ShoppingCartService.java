@@ -1,7 +1,6 @@
 package com.aiolos.library.service;
 
 import com.aiolos.common.exception.CustomizeException;
-import com.aiolos.library.pojo.Book;
 import com.aiolos.library.pojo.ShoppingCart;
 import com.aiolos.library.pojo.bo.ShoppingCartDeleteBO;
 import com.aiolos.library.pojo.bo.ShoppingCartInsertBO;
@@ -27,7 +26,7 @@ public interface ShoppingCartService {
      * @param userId
      * @return
      */
-    List<ShoppingCart> getByUserId(String userId);
+    List<ShoppingCart> getByUserId(Long userId);
 
     /**
      * 根据主键集合批量修改

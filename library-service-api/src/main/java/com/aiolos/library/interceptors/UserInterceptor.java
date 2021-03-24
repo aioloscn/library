@@ -4,7 +4,8 @@ import com.aiolos.common.enums.ErrorEnum;
 import com.aiolos.common.exception.CustomizeException;
 import com.aiolos.common.utils.IPUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,8 +17,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class UserInterceptor implements HandlerInterceptor {
 
+    @Qualifier("redisTemplate")
     @Autowired
-    public StringRedisTemplate redis;
+    public RedisTemplate redis;
 
     public static final String MOBILE_SMSCODE = "mobile:smscode";
 

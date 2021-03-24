@@ -1,7 +1,9 @@
 package com.aiolos.library.service;
 
-import com.aiolos.common.response.CommonResponse;
+import com.aiolos.common.exception.CustomizeException;
 import com.aiolos.library.pojo.Book;
+import com.aiolos.library.pojo.bo.BookInsertBO;
+import com.aiolos.library.pojo.bo.BookUpdateBO;
 
 import java.util.List;
 
@@ -10,7 +12,14 @@ import java.util.List;
  * @date 2021/3/20 6:58 上午
  */
 public interface BookService {
-    Book getById(String id);
 
-    List<Book> searchBatchIds(List<String> ids);
+    void add(List<BookInsertBO> bookInsertBOs) throws CustomizeException;
+
+    Book getById(Long id);
+
+    List<Book> searchBatchIds(List<Long> ids);
+
+    void update(List<BookUpdateBO> bookUpdateBOs) throws CustomizeException;
+
+    void del(List<Long> ids) throws CustomizeException;
 }

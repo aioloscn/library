@@ -20,5 +20,5 @@ public interface UserDao extends BaseMapper<User> {
      * @param userId
      * @return
      */
-    Set<String> searchUserPermissions(String userId);
+    Set<String> searchUserPermissions(Long userId);
 }

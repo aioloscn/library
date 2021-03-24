@@ -5,7 +5,8 @@ import com.aiolos.common.utils.PagedResult;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * @author Aiolos
@@ -14,10 +15,11 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 public class BaseService extends ServiceImpl {
 
     @Autowired
-    public IdGeneratorSnowflake snowflake;
+    public IdGeneratorSnowflake idWorker;
 
+    @Qualifier("redisTemplate")
     @Autowired
-    public StringRedisTemplate redis;
+    public RedisTemplate redis;
 
     public PagedResult setterPagedResult(IPage<?> page) {
         PagedResult pagedResult = new PagedResult();

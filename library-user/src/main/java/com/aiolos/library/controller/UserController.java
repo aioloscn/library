@@ -6,7 +6,7 @@ import com.aiolos.common.exception.CustomizeException;
 import com.aiolos.common.response.CommonResponse;
 import com.aiolos.common.utils.IPUtils;
 import com.aiolos.common.utils.SMSUtils;
-import com.aiolos.library.config.shiro.JwtUtil;
+import com.aiolos.library.config.JwtUtil;
 import com.aiolos.library.controller.user.UserControllerApi;
 import com.aiolos.library.pojo.User;
 import com.aiolos.library.pojo.bo.RegisterLoginBO;
@@ -16,8 +16,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -70,7 +68,7 @@ public class UserController extends BaseController implements UserControllerApi 
         String smsCode = registerLoginBO.getCode();
 
         // 1. 校验验证码是否匹配
-        String redisSMSCode = redis.opsForValue().get(MOBILE_SMSCODE + ":" + phone);
+        String redisSMSCode = redis.opsForValue().get(MOBILE_SMSCODE + ":" + phone).toString();
         if (StringUtils.isBlank(redisSMSCode)) {
             return CommonResponse.error(ErrorEnum.SMS_CODE_EXPIRED);
         }
@@ -91,7 +89,7 @@ public class UserController extends BaseController implements UserControllerApi 
         // TODO 获取角色权限Set列表
 
         // 保存token前查看下redis中是否已存在，已存在则不重新set
-        String token = redis.opsForValue().get(user.getId());
+        String token = redis.opsForValue().get(user.getId()).toString();
         if (StringUtils.isBlank(token)) {
             token = jwtUtil.createToken(user.getId());
             saveCacheToken(user.getId(), token);
@@ -104,29 +102,14 @@ public class UserController extends BaseController implements UserControllerApi 
     }
 
     @Override
-    public CommonResponse getById(String id) {
-        if (StringUtils.isBlank(id)) {
-            return CommonResponse.error(ErrorEnum.USER_DOES_NOT_EXIST);
-        }
-        return CommonResponse.ok(userService.searchById(id));
+    public CommonResponse getByToken(String token) {
+        return CommonResponse.ok(userService.searchById(jwtUtil.getUserId(token)));
     }
 
     @Override
     public CommonResponse logout(String token) {
-        String userId = jwtUtil.getUserId(token);
+        Long userId = jwtUtil.getUserId(token);
         redis.delete(userId);
         return CommonResponse.ok();
-    }
-
-    @Override
-    public CommonResponse searchBatchIds(List<String> ids) {
-        List<String> notExistIds = new LinkedList<>();
-        ids.forEach(id -> {
-            if (StringUtils.isBlank(id)) {
-                notExistIds.add(id);
-            }
-        });
-        String msg = notExistIds.size() > 0 ? notExistIds.toString() + " " + ErrorEnum.USER_DOES_NOT_EXIST : StringUtils.EMPTY;
-        return CommonResponse.ok(msg, userService.searchBatchIds(ids));
     }
 }

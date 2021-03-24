@@ -11,7 +11,7 @@ public class User implements Serializable {
      * 主键
      */
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "SELECT LAST_INSERT_ID()")
-    private String id;
+    private Long id;
 
     /**
      * 长期授权字符串
@@ -110,7 +110,7 @@ public class User implements Serializable {
      *
      * @return id - 主键
      */
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
@@ -119,8 +119,8 @@ public class User implements Serializable {
      *
      * @param id 主键
      */
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+    public void setId(Long id) {
+        this.id = id;
     }
 
     /**

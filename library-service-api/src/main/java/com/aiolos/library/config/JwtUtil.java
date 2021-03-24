@@ -1,4 +1,4 @@
-package com.aiolos.library.config.shiro;
+package com.aiolos.library.config;
 
 import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateTime;
@@ -29,7 +29,7 @@ public class JwtUtil {
     @Value("${library.jwt.expire}")
     private int expire;
 
-    public String createToken(String userId) {
+    public String createToken(long userId) {
 
         DateTime expireDatetime = DateUtil.offset(new Date(), DateField.DAY_OF_YEAR, expire);
         Algorithm algorithm = Algorithm.HMAC256(secret);
@@ -38,10 +38,10 @@ public class JwtUtil {
         return token;
     }
 
-    public String getUserId(String token) {
+    public Long getUserId(String token) {
 
         DecodedJWT jwt = JWT.decode(token);
-        String userId = jwt.getClaim("userId").asString();
+        Long userId = jwt.getClaim("userId").asLong();
         return userId;
     }
 

@@ -12,7 +12,7 @@ public class Permission implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "SELECT LAST_INSERT_ID()")
-    private String id;
+    private Long id;
 
     /**
      * 权限
@@ -24,13 +24,13 @@ public class Permission implements Serializable {
      * 模块id
      */
     @Column(name = "module_id")
-    private String moduleId;
+    private Long moduleId;
 
     /**
      * 行为id
      */
     @Column(name = "action_id")
-    private String actionId;
+    private Long actionId;
 
     private static final long serialVersionUID = 1L;
 
@@ -39,7 +39,7 @@ public class Permission implements Serializable {
      *
      * @return id - 主键
      */
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
@@ -48,8 +48,8 @@ public class Permission implements Serializable {
      *
      * @param id 主键
      */
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+    public void setId(Long id) {
+        this.id = id;
     }
 
     /**
@@ -75,7 +75,7 @@ public class Permission implements Serializable {
      *
      * @return module_id - 模块id
      */
-    public String getModuleId() {
+    public Long getModuleId() {
         return moduleId;
     }
 
@@ -84,8 +84,8 @@ public class Permission implements Serializable {
      *
      * @param moduleId 模块id
      */
-    public void setModuleId(String moduleId) {
-        this.moduleId = moduleId == null ? null : moduleId.trim();
+    public void setModuleId(Long moduleId) {
+        this.moduleId = moduleId;
     }
 
     /**
@@ -93,7 +93,7 @@ public class Permission implements Serializable {
      *
      * @return action_id - 行为id
      */
-    public String getActionId() {
+    public Long getActionId() {
         return actionId;
     }
 
@@ -102,8 +102,8 @@ public class Permission implements Serializable {
      *
      * @param actionId 行为id
      */
-    public void setActionId(String actionId) {
-        this.actionId = actionId == null ? null : actionId.trim();
+    public void setActionId(Long actionId) {
+        this.actionId = actionId;
     }
 
     @Override

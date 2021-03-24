@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8094
   tomcat:
     uri-encoding: UTF-8
     threads:
@@ -27,6 +27,14 @@ logging:
   level:
     root: info
     org.springframework.data.convert.CustomConversions: error # 取消服务启动时的某些警告
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: FULL
+  hystrix:
+    enabled: true
 
 library:
   jwt:

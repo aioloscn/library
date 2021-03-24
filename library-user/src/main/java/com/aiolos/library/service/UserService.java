@@ -1,7 +1,6 @@
 package com.aiolos.library.service;
 
 import com.aiolos.common.exception.CustomizeException;
-import com.aiolos.common.response.CommonResponse;
 import com.aiolos.library.pojo.User;
 
 import java.util.List;
@@ -18,14 +17,14 @@ public interface UserService {
      * @param userId
      * @return
      */
-    User searchById(String userId);
+    User searchById(Long userId);
 
     /**
      * 根据用户主键查询相关操作权限
      * @param userId
      * @return
      */
-    Set<String> searchUserPermissions(String userId);
+    Set<String> searchUserPermissions(Long userId);
 
     /**
      * 注册用户
@@ -48,11 +47,4 @@ public interface UserService {
      * @throws CustomizeException
      */
     User create(String phone) throws CustomizeException;
-
-    /**
-     * 根据主键集合查询相应的数据
-     * @param ids
-     * @return
-     */
-    List<User> searchBatchIds(List<String> ids);
 }

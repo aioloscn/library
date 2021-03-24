@@ -5,7 +5,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="id" jdbcType="BIGINT" property="id" />
     <result column="open_id" jdbcType="VARCHAR" property="openId" />
     <result column="nickname" jdbcType="VARCHAR" property="nickname" />
     <result column="name" jdbcType="VARCHAR" property="name" />
@@ -29,7 +29,7 @@
     select if(count(1), true, false) from tb_user where root = 1;
   </select>
 
-  <select id="searchUserPermissions" parameterType="String" resultType="String">
+  <select id="searchUserPermissions" parameterType="Long" resultType="String">
     select p.permission_name
     from tb_user u
     join tb_role r

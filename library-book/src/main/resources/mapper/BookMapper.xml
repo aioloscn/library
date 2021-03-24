@@ -5,18 +5,28 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="id" jdbcType="VARCHAR" property="id" />
+    <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="pic_url" jdbcType="VARCHAR" property="picUrl" />
+    <result column="brief_introduction" jdbcType="VARCHAR" property="briefIntroduction" />
     <result column="purchase_price" jdbcType="DECIMAL" property="purchasePrice" />
     <result column="purchase_num" jdbcType="INTEGER" property="purchaseNum" />
     <result column="selling_price" jdbcType="DECIMAL" property="sellingPrice" />
     <result column="sales_volume" jdbcType="INTEGER" property="salesVolume" />
     <result column="discount" jdbcType="INTEGER" property="discount" />
+    <result column="original_price" jdbcType="DECIMAL" property="originalPrice" />
+    <result column="catalog" jdbcType="VARCHAR" property="catalog" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="publisher" jdbcType="VARCHAR" property="publisher" />
+    <result column="other_infor" jdbcType="VARCHAR" property="otherInfor" />
     <result column="classification" jdbcType="TINYINT" property="classification" />
     <result column="category" jdbcType="TINYINT" property="category" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="sort" jdbcType="INTEGER" property="sort" />
     <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
     <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="brief" jdbcType="LONGVARCHAR" property="brief" />
+    <result column="preface" jdbcType="LONGVARCHAR" property="preface" />
+    <result column="excerpt" jdbcType="LONGVARCHAR" property="excerpt" />
   </resultMap>
 </mapper>

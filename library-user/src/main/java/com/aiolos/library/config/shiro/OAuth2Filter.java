@@ -1,6 +1,7 @@
 package com.aiolos.library.config.shiro;
 
 import com.aiolos.common.enums.ErrorEnum;
+import com.aiolos.library.config.JwtUtil;
 import com.aiolos.library.config.ThreadLocalToken;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import lombok.extern.slf4j.Slf4j;
@@ -119,7 +120,7 @@ public class OAuth2Filter extends AuthenticatingFilter {
             // 检查redis中是否缓存了该令牌，如果有的话代表客户端保存的令牌已经过期了，服务端的令牌还没过期
             if (redisTemplate.hasKey(token)) {
                 redisTemplate.delete(token);
-                String userId = jwtUtil.getUserId(token);
+                Long userId = jwtUtil.getUserId(token);
                 token = jwtUtil.createToken(userId);
                 redisTemplate.opsForValue().set(token, userId + "", cacheExpire, TimeUnit.DAYS);
                 threadLocalToken.setToken(token);

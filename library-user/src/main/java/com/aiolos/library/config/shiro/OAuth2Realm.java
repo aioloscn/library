@@ -1,6 +1,7 @@
 package com.aiolos.library.config.shiro;
 
 import com.aiolos.common.enums.ErrorEnum;
+import com.aiolos.library.config.JwtUtil;
 import com.aiolos.library.pojo.User;
 import com.aiolos.library.service.UserService;
 import org.apache.shiro.authc.*;
@@ -8,7 +9,6 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -46,7 +46,7 @@ public class OAuth2Realm extends AuthorizingRealm {
 
         // 从令牌中获取userId，然后检查该账户是否有相应请求的权限
         String token = (String) authenticationToken.getPrincipal();
-        String userId = jwtUtil.getUserId(token);
+        Long userId = jwtUtil.getUserId(token);
         User user = userService.searchById(userId);
 
         if (user == null) {

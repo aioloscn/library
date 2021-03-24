@@ -12,31 +12,29 @@ public class ShoppingCart implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "SELECT LAST_INSERT_ID()")
-    private String id;
+    private Long id;
 
     /**
      * 书籍主键
      */
     @Column(name = "book_id")
-    private String bookId;
+    private Long bookId;
 
     /**
      * 用户主键
      */
     @Column(name = "user_id")
-    private String userId;
+    private Long userId;
 
     /**
-     * 总数量
+     * 商品数量
      */
-    @Column(name = "total_quantity")
-    private Integer totalQuantity;
+    private Integer quantity;
 
     /**
-     * 总金额
+     * 商品金额
      */
-    @Column(name = "total_amount")
-    private BigDecimal totalAmount;
+    private BigDecimal amount;
 
     /**
      * 状态: 0: 已删除, 1: 正常
@@ -62,7 +60,7 @@ public class ShoppingCart implements Serializable {
      *
      * @return id - 主键
      */
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
@@ -71,8 +69,8 @@ public class ShoppingCart implements Serializable {
      *
      * @param id 主键
      */
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+    public void setId(Long id) {
+        this.id = id;
     }
 
     /**
@@ -80,7 +78,7 @@ public class ShoppingCart implements Serializable {
      *
      * @return book_id - 书籍主键
      */
-    public String getBookId() {
+    public Long getBookId() {
         return bookId;
     }
 
@@ -89,8 +87,8 @@ public class ShoppingCart implements Serializable {
      *
      * @param bookId 书籍主键
      */
-    public void setBookId(String bookId) {
-        this.bookId = bookId == null ? null : bookId.trim();
+    public void setBookId(Long bookId) {
+        this.bookId = bookId;
     }
 
     /**
@@ -98,7 +96,7 @@ public class ShoppingCart implements Serializable {
      *
      * @return user_id - 用户主键
      */
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
@@ -107,44 +105,44 @@ public class ShoppingCart implements Serializable {
      *
      * @param userId 用户主键
      */
-    public void setUserId(String userId) {
-        this.userId = userId == null ? null : userId.trim();
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     /**
-     * 获取总数量
+     * 获取商品数量
      *
-     * @return total_quantity - 总数量
+     * @return quantity - 商品数量
      */
-    public Integer getTotalQuantity() {
-        return totalQuantity;
+    public Integer getQuantity() {
+        return quantity;
     }
 
     /**
-     * 设置总数量
+     * 设置商品数量
      *
-     * @param totalQuantity 总数量
+     * @param quantity 商品数量
      */
-    public void setTotalQuantity(Integer totalQuantity) {
-        this.totalQuantity = totalQuantity;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     /**
-     * 获取总金额
+     * 获取商品金额
      *
-     * @return total_amount - 总金额
+     * @return amount - 商品金额
      */
-    public BigDecimal getTotalAmount() {
-        return totalAmount;
+    public BigDecimal getAmount() {
+        return amount;
     }
 
     /**
-     * 设置总金额
+     * 设置商品金额
      *
-     * @param totalAmount 总金额
+     * @param amount 商品金额
      */
-    public void setTotalAmount(BigDecimal totalAmount) {
-        this.totalAmount = totalAmount;
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 
     /**
@@ -210,8 +208,8 @@ public class ShoppingCart implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", bookId=").append(bookId);
         sb.append(", userId=").append(userId);
-        sb.append(", totalQuantity=").append(totalQuantity);
-        sb.append(", totalAmount=").append(totalAmount);
+        sb.append(", quantity=").append(quantity);
+        sb.append(", amount=").append(amount);
         sb.append(", status=").append(status);
         sb.append(", gmtCreate=").append(gmtCreate);
         sb.append(", gmtModified=").append(gmtModified);

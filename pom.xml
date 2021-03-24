@@ -12,6 +12,7 @@
         <module>library-user</module>
         <module>library-shopping-cart</module>
         <module>library-book</module>
+        <module>library-order</module>
     </modules>
     <name>library</name>
     <description>Library project for Spring Boot</description>

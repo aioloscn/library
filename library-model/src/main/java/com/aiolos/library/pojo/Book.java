@@ -14,12 +14,24 @@ public class Book implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "SELECT LAST_INSERT_ID()")
-    private String id;
+    private Long id;
 
     /**
      * 书名
      */
     private String name;
+
+    /**
+     * 封面
+     */
+    @Column(name = "pic_url")
+    private String picUrl;
+
+    /**
+     * 内容简介
+     */
+    @Column(name = "brief_introduction")
+    private String briefIntroduction;
 
     /**
      * 进货价格
@@ -51,7 +63,34 @@ public class Book implements Serializable {
     private Integer discount;
 
     /**
-     * 书籍大分类
+     * 原价
+     */
+    @Column(name = "original_price")
+    private BigDecimal originalPrice;
+
+    /**
+     * 目录
+     */
+    private String catalog;
+
+    /**
+     * 作者
+     */
+    private String author;
+
+    /**
+     * 出版社
+     */
+    private String publisher;
+
+    /**
+     * 其他信息
+     */
+    @Column(name = "other_infor")
+    private String otherInfor;
+
+    /**
+     * 书籍大分类，可能不使用全部放在小分类里
      */
     private Integer classification;
 
@@ -82,6 +121,21 @@ public class Book implements Serializable {
     @Column(name = "gmt_modified")
     private Date gmtModified;
 
+    /**
+     * 内容简介
+     */
+    private String brief;
+
+    /**
+     * 前言
+     */
+    private String preface;
+
+    /**
+     * 节选
+     */
+    private String excerpt;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -89,7 +143,7 @@ public class Book implements Serializable {
      *
      * @return id - 主键
      */
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
@@ -98,8 +152,8 @@ public class Book implements Serializable {
      *
      * @param id 主键
      */
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+    public void setId(Long id) {
+        this.id = id;
     }
 
     /**
@@ -118,6 +172,42 @@ public class Book implements Serializable {
      */
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    /**
+     * 获取封面
+     *
+     * @return pic_url - 封面
+     */
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    /**
+     * 设置封面
+     *
+     * @param picUrl 封面
+     */
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl == null ? null : picUrl.trim();
+    }
+
+    /**
+     * 获取内容简介
+     *
+     * @return brief_introduction - 内容简介
+     */
+    public String getBriefIntroduction() {
+        return briefIntroduction;
+    }
+
+    /**
+     * 设置内容简介
+     *
+     * @param briefIntroduction 内容简介
+     */
+    public void setBriefIntroduction(String briefIntroduction) {
+        this.briefIntroduction = briefIntroduction == null ? null : briefIntroduction.trim();
     }
 
     /**
@@ -211,18 +301,108 @@ public class Book implements Serializable {
     }
 
     /**
-     * 获取书籍大分类
+     * 获取原价
      *
-     * @return classification - 书籍大分类
+     * @return original_price - 原价
+     */
+    public BigDecimal getOriginalPrice() {
+        return originalPrice;
+    }
+
+    /**
+     * 设置原价
+     *
+     * @param originalPrice 原价
+     */
+    public void setOriginalPrice(BigDecimal originalPrice) {
+        this.originalPrice = originalPrice;
+    }
+
+    /**
+     * 获取目录
+     *
+     * @return catalog - 目录
+     */
+    public String getCatalog() {
+        return catalog;
+    }
+
+    /**
+     * 设置目录
+     *
+     * @param catalog 目录
+     */
+    public void setCatalog(String catalog) {
+        this.catalog = catalog == null ? null : catalog.trim();
+    }
+
+    /**
+     * 获取作者
+     *
+     * @return author - 作者
+     */
+    public String getAuthor() {
+        return author;
+    }
+
+    /**
+     * 设置作者
+     *
+     * @param author 作者
+     */
+    public void setAuthor(String author) {
+        this.author = author == null ? null : author.trim();
+    }
+
+    /**
+     * 获取出版社
+     *
+     * @return publisher - 出版社
+     */
+    public String getPublisher() {
+        return publisher;
+    }
+
+    /**
+     * 设置出版社
+     *
+     * @param publisher 出版社
+     */
+    public void setPublisher(String publisher) {
+        this.publisher = publisher == null ? null : publisher.trim();
+    }
+
+    /**
+     * 获取其他信息
+     *
+     * @return other_infor - 其他信息
+     */
+    public String getOtherInfor() {
+        return otherInfor;
+    }
+
+    /**
+     * 设置其他信息
+     *
+     * @param otherInfor 其他信息
+     */
+    public void setOtherInfor(String otherInfor) {
+        this.otherInfor = otherInfor == null ? null : otherInfor.trim();
+    }
+
+    /**
+     * 获取书籍大分类，可能不使用全部放在小分类里
+     *
+     * @return classification - 书籍大分类，可能不使用全部放在小分类里
      */
     public Integer getClassification() {
         return classification;
     }
 
     /**
-     * 设置书籍大分类
+     * 设置书籍大分类，可能不使用全部放在小分类里
      *
-     * @param classification 书籍大分类
+     * @param classification 书籍大分类，可能不使用全部放在小分类里
      */
     public void setClassification(Integer classification) {
         this.classification = classification;
@@ -318,6 +498,60 @@ public class Book implements Serializable {
         this.gmtModified = gmtModified;
     }
 
+    /**
+     * 获取内容简介
+     *
+     * @return brief - 内容简介
+     */
+    public String getBrief() {
+        return brief;
+    }
+
+    /**
+     * 设置内容简介
+     *
+     * @param brief 内容简介
+     */
+    public void setBrief(String brief) {
+        this.brief = brief == null ? null : brief.trim();
+    }
+
+    /**
+     * 获取前言
+     *
+     * @return preface - 前言
+     */
+    public String getPreface() {
+        return preface;
+    }
+
+    /**
+     * 设置前言
+     *
+     * @param preface 前言
+     */
+    public void setPreface(String preface) {
+        this.preface = preface == null ? null : preface.trim();
+    }
+
+    /**
+     * 获取节选
+     *
+     * @return excerpt - 节选
+     */
+    public String getExcerpt() {
+        return excerpt;
+    }
+
+    /**
+     * 设置节选
+     *
+     * @param excerpt 节选
+     */
+    public void setExcerpt(String excerpt) {
+        this.excerpt = excerpt == null ? null : excerpt.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -326,17 +560,27 @@ public class Book implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
+        sb.append(", picUrl=").append(picUrl);
+        sb.append(", briefIntroduction=").append(briefIntroduction);
         sb.append(", purchasePrice=").append(purchasePrice);
         sb.append(", purchaseNum=").append(purchaseNum);
         sb.append(", sellingPrice=").append(sellingPrice);
         sb.append(", salesVolume=").append(salesVolume);
         sb.append(", discount=").append(discount);
+        sb.append(", originalPrice=").append(originalPrice);
+        sb.append(", catalog=").append(catalog);
+        sb.append(", author=").append(author);
+        sb.append(", publisher=").append(publisher);
+        sb.append(", otherInfor=").append(otherInfor);
         sb.append(", classification=").append(classification);
         sb.append(", category=").append(category);
         sb.append(", status=").append(status);
         sb.append(", sort=").append(sort);
         sb.append(", gmtCreate=").append(gmtCreate);
         sb.append(", gmtModified=").append(gmtModified);
+        sb.append(", brief=").append(brief);
+        sb.append(", preface=").append(preface);
+        sb.append(", excerpt=").append(excerpt);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
