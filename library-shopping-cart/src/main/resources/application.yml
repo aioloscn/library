@@ -8,6 +8,8 @@ server:
     connection-timeout: 5000
 
 spring:
+  application:
+    name: library-shopping-cart
   profiles:
     active: dev
   jpa:

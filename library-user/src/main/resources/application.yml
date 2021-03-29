@@ -8,6 +8,8 @@ server:
     connection-timeout: 5000
 
 spring:
+  application:
+    name: library-user
   profiles:
     active: dev
   jpa:
