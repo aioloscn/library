@@ -2,6 +2,7 @@ package com.aiolos.library.controller.book;
 
 import com.aiolos.common.exception.CustomizeException;
 import com.aiolos.common.response.CommonResponse;
+import com.aiolos.common.utils.PagedResult;
 import com.aiolos.library.config.MyServiceList;
 import com.aiolos.library.pojo.Book;
 import com.aiolos.library.pojo.bo.BookInsertBO;
@@ -25,8 +26,15 @@ import java.util.List;
 public interface BookControllerApi {
 
     @ApiOperation(value = "添加书籍", httpMethod = "POST")
-    @PostMapping("/add")
-    CommonResponse add(@ApiParam(value = "要新增的书籍集合") @Valid @RequestBody List<BookInsertBO> bookInsertBOs) throws CustomizeException;
+    @PostMapping("/addBooks")
+    CommonResponse addBooks(@ApiParam(value = "要新增的书籍集合") @Valid @RequestBody List<BookInsertBO> bookInsertBOs) throws CustomizeException;
+
+    @ApiOperation(value = "分页获取全部书籍", httpMethod = "GET")
+    @GetMapping("/list")
+    PagedResult getAllBooks(@ApiParam(value = "关键字") @RequestParam(required = false) String keyword,
+                            @ApiParam(value = "书籍类型") @RequestParam(required = false) Integer category,
+                            @ApiParam(value = "查询第几页") @RequestParam(required = false) Integer page,
+                            @ApiParam(value = "每页显示的条数") @RequestParam(required = false) Integer pageSize);
 
     @ApiOperation(value = "根据书籍主键查询书籍信息", httpMethod = "GET")
     @GetMapping("/get/{id}")
@@ -37,11 +45,11 @@ public interface BookControllerApi {
     List<Book> getBatchIds(@RequestBody List<Long> ids);
 
     @ApiOperation(value = "修改书籍", httpMethod = "PUT")
-    @PutMapping
-    CommonResponse update(@ApiParam(value = "要修改的书籍集合") @Valid @RequestBody List<BookUpdateBO> bookUpdateBOs) throws CustomizeException;
+    @PutMapping("/updateBooks")
+    CommonResponse updateBooks(@ApiParam(value = "要修改的书籍集合") @Valid @RequestBody List<BookUpdateBO> bookUpdateBOs) throws CustomizeException;
 
     @ApiOperation(value = "删除书籍", httpMethod = "DELETE")
-    @DeleteMapping
-    CommonResponse del(@ApiParam(value = "要删除的书籍主键集合") @RequestBody List<Long> ids) throws CustomizeException;
+    @DeleteMapping("/deleteBooks")
+    CommonResponse deleteBooks(@ApiParam(value = "要删除的书籍主键集合") @RequestBody List<Long> ids) throws CustomizeException;
 }
 

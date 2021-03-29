@@ -3,6 +3,7 @@ package com.aiolos.library.controller;
 import com.aiolos.common.enums.ErrorEnum;
 import com.aiolos.common.exception.CustomizeException;
 import com.aiolos.common.response.CommonResponse;
+import com.aiolos.common.utils.PagedResult;
 import com.aiolos.library.controller.book.BookControllerApi;
 import com.aiolos.library.pojo.Book;
 import com.aiolos.library.pojo.bo.BookInsertBO;
@@ -31,9 +32,20 @@ public class BookController extends BaseController implements BookControllerApi 
     }
 
     @Override
-    public CommonResponse add(@Valid List<BookInsertBO> bookInsertBOs) throws CustomizeException {
+    public CommonResponse addBooks(@Valid List<BookInsertBO> bookInsertBOs) throws CustomizeException {
         bookService.add(bookInsertBOs);
         return CommonResponse.ok();
+    }
+
+    @Override
+    public PagedResult getAllBooks(String keyword, Integer category, Integer page, Integer pageSize) {
+        if (page == null) {
+            page = START_PAGE;
+        }
+        if (pageSize == null) {
+            pageSize = PAGE_SIZE;
+        }
+        return bookService.getAllBooks(keyword, category, page, pageSize);
     }
 
     @Override
@@ -50,7 +62,7 @@ public class BookController extends BaseController implements BookControllerApi 
     }
 
     @Override
-    public CommonResponse update(List<BookUpdateBO> bookUpdateBOs) throws CustomizeException {
+    public CommonResponse updateBooks(List<BookUpdateBO> bookUpdateBOs) throws CustomizeException {
 
         // 查询书籍是否存在
         List<Long> boIds = bookUpdateBOs.stream().map(BookUpdateBO::getId).collect(Collectors.toList());
@@ -72,7 +84,7 @@ public class BookController extends BaseController implements BookControllerApi 
     }
 
     @Override
-    public CommonResponse del(List<Long> ids) throws CustomizeException {
+    public CommonResponse deleteBooks(List<Long> ids) throws CustomizeException {
         bookService.del(ids);
         return CommonResponse.ok();
     }

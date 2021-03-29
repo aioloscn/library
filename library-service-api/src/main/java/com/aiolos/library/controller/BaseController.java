@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,16 +26,18 @@ public class BaseController {
     @Autowired
     public JwtUtil jwtUtil;
 
-    @Qualifier("redisTemplate")
     @Autowired
-    public RedisTemplate redis;
+    public StringRedisTemplate redis;
 
     public static final int SMSCODE_EXPIRE_TIME = 60;
 
     public static final String MOBILE_SMSCODE = "mobile:smscode";
 
+    public static final Integer START_PAGE = 1;
+    public static final Integer PAGE_SIZE = 20;
+
     public void saveCacheToken(long userId, String token) {
-        redis.opsForValue().set(userId, token, cacheExpire, TimeUnit.DAYS);
+        redis.opsForValue().set(String.valueOf(userId), token, cacheExpire, TimeUnit.DAYS);
     }
 
     /**

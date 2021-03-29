@@ -40,7 +40,7 @@ public class UserController extends BaseController implements UserControllerApi 
 
 
     @Override
-    public CommonResponse getSMSCode(String phone, HttpServletRequest request) {
+    public CommonResponse getSMSCode(String phone, HttpServletRequest request) throws CustomizeException {
 
         if (StringUtils.isBlank(phone)) {
             return CommonResponse.error(ErrorEnum.PHONE_INCORRECT);
@@ -54,7 +54,7 @@ public class UserController extends BaseController implements UserControllerApi 
 
         String code = String.valueOf((int) ((1 + Math.random()) * 1000000)).substring(1);
         log.info("code: {}", code);
-//        smsUtils.sendSMS(phone, code);
+        smsUtils.sendSMS(phone, code);
 
         // 验证码保存5分钟
         redis.opsForValue().set(MOBILE_SMSCODE + ":" + phone, code, 60 * 5, TimeUnit.SECONDS);
@@ -68,7 +68,7 @@ public class UserController extends BaseController implements UserControllerApi 
         String smsCode = registerLoginBO.getCode();
 
         // 1. 校验验证码是否匹配
-        String redisSMSCode = redis.opsForValue().get(MOBILE_SMSCODE + ":" + phone).toString();
+        String redisSMSCode = redis.opsForValue().get(MOBILE_SMSCODE + ":" + phone);
         if (StringUtils.isBlank(redisSMSCode)) {
             return CommonResponse.error(ErrorEnum.SMS_CODE_EXPIRED);
         }
@@ -89,7 +89,7 @@ public class UserController extends BaseController implements UserControllerApi 
         // TODO 获取角色权限Set列表
 
         // 保存token前查看下redis中是否已存在，已存在则不重新set
-        String token = redis.opsForValue().get(user.getId()).toString();
+        String token = redis.opsForValue().get(user.getId().toString());
         if (StringUtils.isBlank(token)) {
             token = jwtUtil.createToken(user.getId());
             saveCacheToken(user.getId(), token);
@@ -109,7 +109,7 @@ public class UserController extends BaseController implements UserControllerApi 
     @Override
     public CommonResponse logout(String token) {
         Long userId = jwtUtil.getUserId(token);
-        redis.delete(userId);
+        redis.delete(String.valueOf(userId));
         return CommonResponse.ok();
     }
 }

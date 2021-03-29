@@ -8,7 +8,6 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="pic_url" jdbcType="VARCHAR" property="picUrl" />
-    <result column="brief_introduction" jdbcType="VARCHAR" property="briefIntroduction" />
     <result column="purchase_price" jdbcType="DECIMAL" property="purchasePrice" />
     <result column="purchase_num" jdbcType="INTEGER" property="purchaseNum" />
     <result column="selling_price" jdbcType="DECIMAL" property="sellingPrice" />

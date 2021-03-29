@@ -1,6 +1,7 @@
 package com.aiolos.library.service;
 
 import com.aiolos.common.exception.CustomizeException;
+import com.aiolos.common.utils.PagedResult;
 import com.aiolos.library.pojo.Book;
 import com.aiolos.library.pojo.bo.BookInsertBO;
 import com.aiolos.library.pojo.bo.BookUpdateBO;
@@ -14,6 +15,8 @@ import java.util.List;
 public interface BookService {
 
     void add(List<BookInsertBO> bookInsertBOs) throws CustomizeException;
+
+    PagedResult getAllBooks(String keyword, Integer category, Integer page, Integer pageSize);
 
     Book getById(Long id);
 

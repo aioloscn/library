@@ -28,12 +28,6 @@ public class Book implements Serializable {
     private String picUrl;
 
     /**
-     * 内容简介
-     */
-    @Column(name = "brief_introduction")
-    private String briefIntroduction;
-
-    /**
      * 进货价格
      */
     @Column(name = "purchase_price")
@@ -190,24 +184,6 @@ public class Book implements Serializable {
      */
     public void setPicUrl(String picUrl) {
         this.picUrl = picUrl == null ? null : picUrl.trim();
-    }
-
-    /**
-     * 获取内容简介
-     *
-     * @return brief_introduction - 内容简介
-     */
-    public String getBriefIntroduction() {
-        return briefIntroduction;
-    }
-
-    /**
-     * 设置内容简介
-     *
-     * @param briefIntroduction 内容简介
-     */
-    public void setBriefIntroduction(String briefIntroduction) {
-        this.briefIntroduction = briefIntroduction == null ? null : briefIntroduction.trim();
     }
 
     /**
@@ -561,7 +537,6 @@ public class Book implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
         sb.append(", picUrl=").append(picUrl);
-        sb.append(", briefIntroduction=").append(briefIntroduction);
         sb.append(", purchasePrice=").append(purchasePrice);
         sb.append(", purchaseNum=").append(purchaseNum);
         sb.append(", sellingPrice=").append(sellingPrice);

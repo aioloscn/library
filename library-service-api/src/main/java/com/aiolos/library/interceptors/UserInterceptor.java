@@ -6,6 +6,7 @@ import com.aiolos.common.utils.IPUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,9 +18,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class UserInterceptor implements HandlerInterceptor {
 
-    @Qualifier("redisTemplate")
     @Autowired
-    public RedisTemplate redis;
+    public StringRedisTemplate redis;
 
     public static final String MOBILE_SMSCODE = "mobile:smscode";
 

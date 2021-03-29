@@ -1,8 +1,10 @@
 package com.aiolos.library.config;
 
+import com.google.common.base.Predicate;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import springfox.documentation.RequestHandler;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -41,6 +43,8 @@ public class SwaggerConfig {
         // 指扫描所有包下面的类
         selectorBuilder.paths(PathSelectors.any());
 
+//        也可以指定包路径控制哪些controller可以展示，添加到.apis()里
+//        Predicate<RequestHandler> xxxPredicate = RequestHandlerSelectors.basePackage("com.aiolos.library.xxx");
         // 指扫描所有标注ApiOperation注解的方法
         selectorBuilder.apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class));
         docket = selectorBuilder.build();

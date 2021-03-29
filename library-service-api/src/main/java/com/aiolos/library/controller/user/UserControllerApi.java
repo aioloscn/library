@@ -24,7 +24,7 @@ public interface UserControllerApi {
 
     @ApiOperation(value = "获取短信验证码", httpMethod = "POST")
     @PostMapping("/getSMSCode")
-    CommonResponse getSMSCode(@ApiParam(value = "接收验证码的手机号", required = true) @RequestParam String phone, HttpServletRequest request);
+    CommonResponse getSMSCode(@ApiParam(value = "接收验证码的手机号", required = true) @RequestParam String phone, HttpServletRequest request) throws CustomizeException;
 
     @ApiOperation(value = "一键注册登录接口", httpMethod = "POST")
     @PostMapping("/login")

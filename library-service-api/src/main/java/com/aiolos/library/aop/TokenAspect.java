@@ -41,7 +41,7 @@ public class TokenAspect {
 
         long start = System.currentTimeMillis();
 
-        CommonResponse resp = (CommonResponse) point.proceed();
+        Object resp = point.proceed();
 
         long end = System.currentTimeMillis();
         long takeTime = end - start;
@@ -56,8 +56,8 @@ public class TokenAspect {
 
         // 注册和登录时已经put token，防止其他情况下遗漏在请求结束后再put一次
         String token = threadLocalToken.getToken();
-        if (token != null) {
-            resp.put("token", token);
+        if (resp instanceof CommonResponse && token != null) {
+            ((CommonResponse) resp).put("token", token);
             threadLocalToken.clear();
         }
         return resp;

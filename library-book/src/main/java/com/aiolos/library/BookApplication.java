@@ -14,8 +14,6 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @MapperScan(basePackages = "com.aiolos.library.dao")
 @ComponentScan(basePackages = "com.aiolos")
-@EnableFeignClients(basePackages = "com.aiolos")
-@EnableHystrix      // 服务调用者断路器开启，服务提供者已经写了全局服务熔断降级方法，加上这个注解才可用
 public class BookApplication {
 
     public static void main(String[] args) {
