@@ -38,14 +38,25 @@ public class BookController extends BaseController implements BookControllerApi 
     }
 
     @Override
-    public PagedResult getAllBooks(String keyword, Integer category, Integer page, Integer pageSize) {
+    public PagedResult getAllBooks(String keyword, Integer category, Integer status, Integer page, Integer pageSize, Integer sort) {
         if (page == null) {
             page = START_PAGE;
         }
         if (pageSize == null) {
             pageSize = PAGE_SIZE;
         }
-        return bookService.getAllBooks(keyword, category, page, pageSize);
+        return bookService.getAllBooks(keyword, category, status, page, pageSize, sort);
+    }
+
+    @Override
+    public CommonResponse list(String keyword, Integer category, Integer status, Integer page, Integer pageSize, Integer sort) {
+        if (page == null) {
+            page = START_PAGE;
+        }
+        if (pageSize == null) {
+            pageSize = PAGE_SIZE;
+        }
+        return CommonResponse.ok(getAllBooks(keyword, category, status, page, pageSize, sort));
     }
 
     @Override

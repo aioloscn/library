@@ -1,0 +1,24 @@
+server:
+  port: 7000
+spring:
+  application:
+    name: springcloud-eureka
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+logging:
+  level:
+    root: info
+    org.springframework.data.convert.CustomConversions: error # 取消服务启动时的某些警告
+
+library:
+  jwt:
+    secret: librarysecretsalt
+    expire: 7
+    cache-expire: 10

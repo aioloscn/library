@@ -14,6 +14,7 @@ spring:
     active: dev
   jpa:
     open-in-view: false   # pom不添加jpa包会报程序包javax.persistence不存在，项目中不用jpa相关功能，关闭项目启动时的jpa警告
+
 mapper:
   mappers: com.aiolos.library.common.MyMapper
   not-empty: false        # 在进行数据库操作的时候，判断表达式 username != null, 是否追加 username != ''
@@ -29,13 +30,39 @@ logging:
   level:
     root: info
     org.springframework.data.convert.CustomConversions: error # 取消服务启动时的某些警告
+    org.springframework.cloud.loadbalancer.config.BlockingLoadBalancerClientAutoConfiguration: error
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:7000/eureka/
+
+# 配置Hystrix
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 6000   # 设置Hystrix超时时间，超过2秒触发降级
 
 feign:
-  client:
-    config:
-      default:
-        loggerLevel: FULL
   hystrix:
+    enabled: true
+
+ribbon:
+  # 当请求某个微服务5s没连接，超时后会进行重试，先重试连接自己当前的这个实例
+  # 如果当前实例重连一次失败，则会切换到访问集群中的下一个微服务实例，切换次数最大为2次
+  ConnectTimeout: 10000          # 创建连接的超时时间，单位：ms
+  ReadTimeout: 10000             # 在连接创建好以后，调用接口的超时时间，单位：ms
+  MaxAutoRetries: 3             # 最大重试次数
+  MaxAutoRetriesNextServer: 2   # 集群上一个实例节点宕机后，切换到后面多少个微服务实例去重试
+  eureka:
     enabled: true
 
 library:

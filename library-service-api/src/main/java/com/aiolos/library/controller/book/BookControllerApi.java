@@ -30,11 +30,22 @@ public interface BookControllerApi {
     CommonResponse addBooks(@ApiParam(value = "要新增的书籍集合") @Valid @RequestBody List<BookInsertBO> bookInsertBOs) throws CustomizeException;
 
     @ApiOperation(value = "分页获取全部书籍", httpMethod = "GET")
-    @GetMapping("/list")
+    @GetMapping("/getAllBooks")
     PagedResult getAllBooks(@ApiParam(value = "关键字") @RequestParam(required = false) String keyword,
                             @ApiParam(value = "书籍类型") @RequestParam(required = false) Integer category,
+                            @ApiParam(value = "状态") @RequestParam(required = false) Integer status,
                             @ApiParam(value = "查询第几页") @RequestParam(required = false) Integer page,
-                            @ApiParam(value = "每页显示的条数") @RequestParam(required = false) Integer pageSize);
+                            @ApiParam(value = "每页显示的条数") @RequestParam(required = false) Integer pageSize,
+                            @ApiParam(value = "排序") @RequestParam(required = false, defaultValue = "1") Integer sort);
+
+    @ApiOperation(value = "分页获取全部书籍", httpMethod = "GET")
+    @GetMapping("/list")
+    CommonResponse list(@ApiParam(value = "关键字") @RequestParam(required = false) String keyword,
+                               @ApiParam(value = "书籍类型") @RequestParam(required = false) Integer category,
+                               @ApiParam(value = "状态") @RequestParam(required = false) Integer status,
+                               @ApiParam(value = "查询第几页") @RequestParam(required = false) Integer page,
+                               @ApiParam(value = "每页显示的条数") @RequestParam(required = false) Integer pageSize,
+                               @ApiParam(value = "排序") @RequestParam(required = false, defaultValue = "1") Integer sort);
 
     @ApiOperation(value = "根据书籍主键查询书籍信息", httpMethod = "GET")
     @GetMapping("/get/{id}")

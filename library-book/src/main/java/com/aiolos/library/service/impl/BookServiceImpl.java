@@ -62,7 +62,7 @@ public class BookServiceImpl extends BaseService implements BookService {
     }
 
     @Override
-    public PagedResult getAllBooks(String keyword, Integer category, Integer page, Integer pageSize) {
+    public PagedResult getAllBooks(String keyword, Integer category, Integer status, Integer page, Integer pageSize, Integer sort) {
         QueryWrapper queryWrapper = new QueryWrapper();
         if (StringUtils.isNotBlank(keyword)) {
             queryWrapper.like("name", keyword);
@@ -70,12 +70,29 @@ public class BookServiceImpl extends BaseService implements BookService {
         if (ObjectUtil.isNotNull(category)) {
             queryWrapper.eq("category", category);
         }
-        queryWrapper.orderByDesc("gmt_create");
+        if (ObjectUtil.isNotNull(status)) {
+            queryWrapper.eq("status", status);
+        } else {
+            queryWrapper.ne("status", BookStatus.DELETED.getType());
+        }
+        switch (sort) {
+            case 1:
+                queryWrapper.orderByDesc("gmt_create");
+                break;
+            case 2:
+                queryWrapper.orderByDesc("name");
+                break;
+            case 3:
+                queryWrapper.orderByDesc("selling_price");
+                break;
+        }
+
         IPage<Book> bookIPage = new Page<>(page, pageSize);
         bookIPage = bookDao.selectPage(bookIPage, queryWrapper);
         List<Book> books = bookIPage.getRecords();
         List<AllBooksVO> allBooksVOs = CustomizeBeanUtil.copyListProperties(books, AllBooksVO::new);
         allBooksVOs.forEach(vo -> {
+            vo.setIdStr(vo.getId().toString());
             // 处理折扣
             Integer discount = vo.getDiscount();
             vo.setDiscountStr(new BigDecimal(discount).divide(new BigDecimal(100)).toString() + "折");

@@ -16,7 +16,7 @@ public interface BookService {
 
     void add(List<BookInsertBO> bookInsertBOs) throws CustomizeException;
 
-    PagedResult getAllBooks(String keyword, Integer category, Integer page, Integer pageSize);
+    PagedResult getAllBooks(String keyword, Integer category, Integer status, Integer page, Integer pageSize, Integer sort);
 
     Book getById(Long id);
 

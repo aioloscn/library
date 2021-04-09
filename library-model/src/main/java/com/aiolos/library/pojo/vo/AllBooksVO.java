@@ -24,6 +24,11 @@ public class AllBooksVO {
     private Long id;
 
     /**
+     * 解决数字太长前端精度丢失问题
+     */
+    private String idStr;
+
+    /**
      * 书名
      */
     private String name;

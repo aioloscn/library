@@ -1,0 +1,49 @@
+server:
+  port: 7070
+spring:
+  application:
+    name: zuul-server
+  cloud:
+    config:
+      name: zuul
+      discovery:
+        enabled: true
+
+logging:
+  level:
+    root: info
+    org.springframework.data.convert.CustomConversions: error # 取消服务启动时的某些警告
+    org.springframework.cloud.loadbalancer.config.BlockingLoadBalancerClientAutoConfiguration: error
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+  client:
+    service-url:
+      defaultZone: http://localhost:7000/eureka/
+
+zuul:
+  routes:
+    library-user: /user/**
+    library-book: /book/**               # 实例名: /路径/**
+    library-order: /order/**
+    library-shopping-cart: /cart/**
+#      url: http://127.0.0.1:8093
+  host:
+    connect-timeout-millis: 15000        # http连接超时要比Hystrix的大
+    socket-timeout-millis: 60000         # socket超时
+  ignored-headers: Access-Control-Allow-Credentials, Access-Control-Allow-Origin    # 每次转发都多一次跨域头部信息，忽略掉
+
+# ribbon的超时时间要小于zuul的超时时间
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
+  eureka:
+    enabled: true
+
+library:
+  jwt:
+    secret: librarysecretsalt
+    expire: 7
+    cache-expire: 10

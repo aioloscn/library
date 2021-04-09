@@ -2,7 +2,7 @@
 
 <configuration>
     <!-- 指定日志文件的存储地址，使用绝对路径 -->
-    <property name="LOG_HOME" value="../logs/library/user"/>
+    <property name="LOG_HOME" value="../logs/library/zuul"/>
     <!-- console输出设置 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -16,7 +16,7 @@
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 日志文件输出的文件名 -->
-            <fileNamePattern>${LOG_HOME}/library-user.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/library-zuul.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>30</maxHistory>
 
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
