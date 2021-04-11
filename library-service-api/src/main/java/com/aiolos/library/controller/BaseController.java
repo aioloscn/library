@@ -46,7 +46,7 @@ public class BaseController {
      * @throws CustomizeException
      */
     public void checkIfTheUserExists(CommonResponse userResp) throws CustomizeException {
-        if (userResp == null || userResp.getData() == null || !(userResp.getData() instanceof User)) {
+        if (userResp == null || userResp.getData() == null) {
             throw new CustomizeException(ErrorEnum.USER_DOES_NOT_EXIST);
         }
     }
@@ -56,7 +56,7 @@ public class BaseController {
      * @param bookResp
      */
     public void checkIfTheBookExists(CommonResponse bookResp) throws CustomizeException {
-        if (bookResp == null || bookResp.getData() == null || !(bookResp.getData() instanceof Book)) {
+        if (bookResp == null || bookResp.getData() == null) {
             throw new CustomizeException(ErrorEnum.BOOK_DOES_NOT_EXIST);
         }
     }

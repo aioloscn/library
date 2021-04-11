@@ -4,6 +4,7 @@ import com.aiolos.common.exception.CustomizeException;
 import com.aiolos.common.response.CommonResponse;
 import com.aiolos.common.utils.PagedResult;
 import com.aiolos.library.config.MyServiceList;
+import com.aiolos.library.controller.book.fallbacks.BookControllerFallbackFactory;
 import com.aiolos.library.pojo.Book;
 import com.aiolos.library.pojo.bo.BookInsertBO;
 import com.aiolos.library.pojo.bo.BookUpdateBO;
@@ -21,8 +22,8 @@ import java.util.List;
  * @date 2021/3/20 5:51 上午
  */
 @Api(tags = "书籍信息相关接口")
-@FeignClient(value = MyServiceList.LIBRARY_BOOK)
 @RequestMapping("/book")
+@FeignClient(value = MyServiceList.LIBRARY_BOOK, fallbackFactory = BookControllerFallbackFactory.class)
 public interface BookControllerApi {
 
     @ApiOperation(value = "添加书籍", httpMethod = "POST")
@@ -51,8 +52,8 @@ public interface BookControllerApi {
     @GetMapping("/get/{id}")
     CommonResponse getById(@ApiParam(value = "书籍主键", required = true) @PathVariable("id") Long id);
 
-    @ApiOperation(value = "根据书籍主键集合查询书籍信息，用于其他模块远程调用", httpMethod = "GET")
-    @GetMapping("/getBatchIds")
+    @ApiOperation(value = "根据书籍主键集合查询书籍信息，用于其他模块远程调用", httpMethod = "POST")
+    @PostMapping("/getBatchIds")
     List<Book> getBatchIds(@RequestBody List<Long> ids);
 
     @ApiOperation(value = "修改书籍", httpMethod = "PUT")

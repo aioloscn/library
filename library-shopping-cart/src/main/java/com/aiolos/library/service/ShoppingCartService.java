@@ -5,6 +5,7 @@ import com.aiolos.library.pojo.ShoppingCart;
 import com.aiolos.library.pojo.bo.ShoppingCartDeleteBO;
 import com.aiolos.library.pojo.bo.ShoppingCartInsertBO;
 import com.aiolos.library.pojo.bo.ShoppingCartUpdateBO;
+import com.aiolos.library.pojo.vo.ShoppingCartBookVO;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public interface ShoppingCartService {
      * @param userId
      * @return
      */
-    List<ShoppingCart> getByUserId(Long userId);
+    List<ShoppingCartBookVO> getByUserId(Long userId);
 
     /**
      * 根据主键集合批量修改

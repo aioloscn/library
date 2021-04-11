@@ -74,8 +74,8 @@ public class OrderServiceImpl extends BaseService implements OrderService {
     @Override
     public List<OrderForm> getOrderByUser(Long orderNo, Long userId) {
         QueryWrapper wrapper = new QueryWrapper();
-        wrapper.eq("orderNo", orderNo);
-        wrapper.eq("userId", userId);
+        wrapper.eq("order_no", orderNo);
+        wrapper.eq("user_id", userId);
         return orderFormDao.selectList(wrapper);
     }
 
@@ -87,7 +87,7 @@ public class OrderServiceImpl extends BaseService implements OrderService {
         List<OrderUpdateBO.OrderBookUpdateBO> orderBooks = orderUpdateBO.getOrderBookUpdateBOs();
         OrderForm orderForm = BeanUtil.copyProperties(orderUpdateBO, OrderForm.class);
         UpdateWrapper wrapper = new UpdateWrapper();
-        wrapper.eq("orderNo", orderUpdateBO.getOrderNo());
+        wrapper.eq("order_no", orderUpdateBO.getOrderNo());
 
         // 只有orderNo没有每个订单的id，所以循环update
         for (OrderUpdateBO.OrderBookUpdateBO book : orderBooks) {
@@ -112,12 +112,12 @@ public class OrderServiceImpl extends BaseService implements OrderService {
 
         // 根据orderNo查询有多少条订单明细，修改的数量要和订单明细数一致
         QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.eq("orderNo", orderDeleteBO.getOrderNo());
+        queryWrapper.eq("order_no", orderDeleteBO.getOrderNo());
         List<OrderForm> orders = orderFormDao.selectList(queryWrapper);
 
         // where条件
         UpdateWrapper updateWrapper = new UpdateWrapper();
-        updateWrapper.eq("orderNo", orderDeleteBO.getOrderNo());
+        updateWrapper.eq("order_no", orderDeleteBO.getOrderNo());
         // 要修改的entity
         OrderForm orderForm = new OrderForm();
         orderForm.setStatus(OrderStatus.DELETED.getType());

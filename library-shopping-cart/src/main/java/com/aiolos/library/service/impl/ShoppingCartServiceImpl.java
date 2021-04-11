@@ -6,11 +6,14 @@ import com.aiolos.common.enums.ErrorEnum;
 import com.aiolos.common.enums.ShoppingCartStatus;
 import com.aiolos.common.exception.CustomizeException;
 import com.aiolos.common.utils.CustomizeBeanUtil;
+import com.aiolos.library.controller.book.BookControllerApi;
 import com.aiolos.library.dao.ShoppingCartDao;
+import com.aiolos.library.pojo.Book;
 import com.aiolos.library.pojo.ShoppingCart;
 import com.aiolos.library.pojo.bo.ShoppingCartDeleteBO;
 import com.aiolos.library.pojo.bo.ShoppingCartInsertBO;
 import com.aiolos.library.pojo.bo.ShoppingCartUpdateBO;
+import com.aiolos.library.pojo.vo.ShoppingCartBookVO;
 import com.aiolos.library.service.BaseService;
 import com.aiolos.library.service.ShoppingCartService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -19,8 +22,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Aiolos
@@ -31,9 +37,11 @@ import java.util.List;
 public class ShoppingCartServiceImpl extends BaseService implements ShoppingCartService {
 
     private final ShoppingCartDao shoppingCartDao;
+    private final BookControllerApi bookControllerApi;
 
-    public ShoppingCartServiceImpl(ShoppingCartDao shoppingCartDao) {
+    public ShoppingCartServiceImpl(ShoppingCartDao shoppingCartDao, BookControllerApi bookControllerApi) {
         this.shoppingCartDao = shoppingCartDao;
+        this.bookControllerApi = bookControllerApi;
     }
 
     @Transactional(propagation = Propagation.NESTED, rollbackFor = CustomizeException.class)
@@ -58,11 +66,34 @@ public class ShoppingCartServiceImpl extends BaseService implements ShoppingCart
     }
 
     @Override
-    public List<ShoppingCart> getByUserId(Long userId) {
-        QueryWrapper wrapper = new QueryWrapper();
-        wrapper.eq("userId", userId);
+    public List<ShoppingCartBookVO> getByUserId(Long userId) {
+        QueryWrapper<ShoppingCart> wrapper = new QueryWrapper();
+        wrapper.eq("user_id", userId);
         wrapper.eq("status", ShoppingCartStatus.NORMAL.getType());
-        return shoppingCartDao.selectList(wrapper);
+        List<ShoppingCart> shoppingCarts = shoppingCartDao.selectList(wrapper);
+        // 合并购物车中同一本书，并合计购买数和金额
+        List<ShoppingCart> newShoppingCarts = new LinkedList<>();
+        shoppingCarts.parallelStream().collect(Collectors.groupingBy(c -> (c.getBookId()), Collectors.toList())).forEach(
+                (q, transfer) -> {
+                    transfer.stream().reduce((a, b) -> new ShoppingCart(
+                            a.getId(), a.getBookId(), a.getUserId(),
+                            a.getQuantity() + b.getQuantity(),
+                            a.getAmount().add(b.getAmount()),
+                            a.getStatus(), a.getGmtCreate(), a.getGmtModified())).ifPresent(newShoppingCarts::add);
+                }
+        );
+
+        List<Long> bookIds = newShoppingCarts.stream().map(ShoppingCart::getBookId).distinct().collect(Collectors.toList());
+        List<Book> books = bookControllerApi.getBatchIds(bookIds);
+        List<ShoppingCartBookVO> shoppingCartBookVOs = CustomizeBeanUtil.copyListProperties(newShoppingCarts, ShoppingCartBookVO::new);
+        shoppingCartBookVOs.forEach(c -> {
+            books.forEach(b -> {
+                if (c.getBookId().equals(b.getId())) {
+                    c.setBook(b);
+                }
+            });
+        });
+        return shoppingCartBookVOs;
     }
 
     @Transactional(propagation = Propagation.NESTED, rollbackFor = CustomizeException.class)

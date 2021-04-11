@@ -7,7 +7,7 @@ package com.aiolos.library.config;
  */
 public class MyServiceList {
 
-    public static final String LIBRARY_USER = "library/user";
-    public static final String LIBRARY_BOOK = "library/book";
-    public static final String LIBRARY_SHOPPING_CART = "library/shoppingCart";
+    public static final String LIBRARY_USER = "library-user";
+    public static final String LIBRARY_BOOK = "library-book";
+    public static final String LIBRARY_SHOPPING_CART = "library-shopping-cart";
 }

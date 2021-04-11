@@ -1,5 +1,7 @@
 package com.aiolos.library.controller;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.http.HttpStatus;
 import com.aiolos.common.enums.ErrorEnum;
 import com.aiolos.common.exception.CustomizeException;
 import com.aiolos.common.response.CommonResponse;
@@ -11,10 +13,12 @@ import com.aiolos.library.pojo.ShoppingCart;
 import com.aiolos.library.pojo.bo.ShoppingCartDeleteBO;
 import com.aiolos.library.pojo.bo.ShoppingCartInsertBO;
 import com.aiolos.library.pojo.bo.ShoppingCartUpdateBO;
+import com.aiolos.library.pojo.vo.ShoppingCartBookVO;
 import com.aiolos.library.service.ShoppingCartService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,20 +46,29 @@ public class ShoppingCartController extends BaseController implements ShoppingCa
 
         // 查询用户是否存在
         CommonResponse userResp = userControllerApi.getByToken(token);
+        if (userResp.getCode() == null || userResp.getCode() != HttpStatus.HTTP_OK) {
+            return userResp;
+        }
         checkIfTheUserExists(userResp);
         shoppingCartInsertBO.setUserId(jwtUtil.getUserId(token));
 
         // 查询书籍是否存在
         CommonResponse bookResp = bookControllerApi.getById(shoppingCartInsertBO.getBookId());
+        if (bookResp.getCode() == null || bookResp.getCode() != HttpStatus.HTTP_OK) {
+            return bookResp;
+        }
         checkIfTheBookExists(bookResp);
 
+        Book book = BeanUtil.copyProperties(bookResp.getData(), Book.class);
+        BigDecimal amount = new BigDecimal(shoppingCartInsertBO.getQuantity()).multiply(book.getSellingPrice());
+        shoppingCartInsertBO.setAmount(amount);
         ShoppingCart shoppingCart = shoppingCartService.add(shoppingCartInsertBO);
         return CommonResponse.ok(shoppingCart);
     }
 
     @Override
     public CommonResponse getByUser(String token) {
-        List<ShoppingCart> shoppingCart = shoppingCartService.getByUserId(jwtUtil.getUserId(token));
+        List<ShoppingCartBookVO> shoppingCart = shoppingCartService.getByUserId(jwtUtil.getUserId(token));
         return CommonResponse.ok(shoppingCart);
     }
 
@@ -64,6 +77,9 @@ public class ShoppingCartController extends BaseController implements ShoppingCa
 
         // 查询用户是否存在
         CommonResponse userResp = userControllerApi.getByToken(token);
+        if (userResp.getCode() == null || userResp.getCode() != HttpStatus.HTTP_OK) {
+            return userResp;
+        }
         checkIfTheUserExists(userResp);
         Long userId = jwtUtil.getUserId(token);
         shoppingCartUpdateBOs.forEach(c -> c.setUserId(userId));
@@ -97,6 +113,9 @@ public class ShoppingCartController extends BaseController implements ShoppingCa
 
         // 查询用户是否存在
         CommonResponse userResp = userControllerApi.getByToken(token);
+        if (userResp.getCode() == null || userResp.getCode() != HttpStatus.HTTP_OK) {
+            return userResp;
+        }
         checkIfTheUserExists(userResp);
         Long userId = jwtUtil.getUserId(token);
         shoppingCartDeleteBOs.forEach(c -> c.setUserId(userId));

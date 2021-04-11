@@ -28,8 +28,6 @@ public class ShoppingCartInsertBO {
     @Min(value = 1, message = "购买数量不能小于1")
     public Integer quantity;
 
-    @ApiModelProperty(value = "书籍购买的金额", required = true)
-    @NotNull(message = "金额数不能为空")
-    @Min(value = 0, message = "金额数不规范")
-    public BigDecimal qmount;
+    @ApiModelProperty(value = "书籍购买的金额", notes = "金额会变，从数据库取")
+    public BigDecimal amount;
 }

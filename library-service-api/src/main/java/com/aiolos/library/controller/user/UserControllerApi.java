@@ -3,6 +3,7 @@ package com.aiolos.library.controller.user;
 import com.aiolos.common.exception.CustomizeException;
 import com.aiolos.common.response.CommonResponse;
 import com.aiolos.library.config.MyServiceList;
+import com.aiolos.library.controller.user.fallbacks.UserControllerFallbackFactory;
 import com.aiolos.library.pojo.bo.RegisterLoginBO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,13 +14,15 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+
+
 /**
  * @author Aiolos
  * @date 2021/3/19 4:41 下午
  */
 @Api(tags = "用户注册登录")
-@FeignClient(value = MyServiceList.LIBRARY_USER)    // TODO 先不做降级处理
 @RequestMapping("/user")
+@FeignClient(value = MyServiceList.LIBRARY_USER, fallbackFactory = UserControllerFallbackFactory.class)
 public interface UserControllerApi {
 
     @ApiOperation(value = "获取短信验证码", httpMethod = "POST")

@@ -1,11 +1,16 @@
 package com.aiolos.library.pojo;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Table(name = "shopping_cart")
+@NoArgsConstructor
+@AllArgsConstructor
 public class ShoppingCart implements Serializable {
     /**
      * 主键

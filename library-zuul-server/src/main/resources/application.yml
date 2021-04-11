@@ -25,10 +25,10 @@ eureka:
 
 zuul:
   routes:
-    library-user: /user/**
-    library-book: /book/**               # 实例名: /路径/**
-    library-order: /order/**
-    library-shopping-cart: /cart/**
+    library-user: /library-user/**
+    library-book: /library-book/**               # 实例名: /路径/**
+    library-order: /library-order/**
+    library-shopping-cart: /library-shopping-cart/**
 #      url: http://127.0.0.1:8093
   host:
     connect-timeout-millis: 15000        # http连接超时要比Hystrix的大
