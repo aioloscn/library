@@ -99,4 +99,9 @@ public class BookController extends BaseController implements BookControllerApi 
         bookService.del(ids);
         return CommonResponse.ok();
     }
+
+    @Override
+    public CommonResponse getSimilarRecommended(Integer classification) {
+        return CommonResponse.ok(bookService.getSimilarRecommended(classification));
+    }
 }

@@ -62,5 +62,9 @@ public interface BookControllerApi {
     @ApiOperation(value = "删除书籍", httpMethod = "DELETE")
     @DeleteMapping("/deleteBooks")
     CommonResponse deleteBooks(@ApiParam(value = "要删除的书籍主键集合") @RequestBody List<Long> ids) throws CustomizeException;
+
+    @ApiOperation(value = "获取同类推荐书籍", httpMethod = "GET")
+    @GetMapping("/getSimilarRecommended/{classification}")
+    CommonResponse getSimilarRecommended(@ApiParam(value = "书籍分类", required = true) @PathVariable("classification") Integer classification);
 }
 

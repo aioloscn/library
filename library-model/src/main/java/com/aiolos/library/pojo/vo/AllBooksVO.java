@@ -105,10 +105,14 @@ public class AllBooksVO {
      */
     private Integer classification;
 
+    private String classificationStr;
+
     /**
      * 书籍小分类
      */
     private Integer category;
+
+    private String categoryStr;
 
     /**
      * 状态: 0: 已删除, 1: 已上架: 2: 未上架

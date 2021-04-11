@@ -1,5 +1,6 @@
 package com.aiolos.library.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.aiolos.common.enums.BookStatus;
 import com.aiolos.common.enums.ErrorEnum;
@@ -18,13 +19,16 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Aiolos
@@ -107,11 +111,50 @@ public class BookServiceImpl extends BaseService implements BookService {
     }
 
     @Override
-    public Book getById(Long id) {
+    public AllBooksVO getById(Long id) {
         QueryWrapper wrapper = new QueryWrapper();
         wrapper.eq("id", id);
         wrapper.eq("status", BookStatus.ON_THE_SHELVES.getType());
-        return bookDao.selectOne(wrapper);
+        Book book = bookDao.selectOne(wrapper);
+        AllBooksVO allBooksVO = BeanUtil.copyProperties(book, AllBooksVO.class);
+        allBooksVO.setIdStr(allBooksVO.getId().toString());
+        if (StringUtils.isBlank(allBooksVO.getBrief())) {
+            allBooksVO.setBrief("没有录入相关数据~");
+        }
+        if (StringUtils.isBlank(allBooksVO.getPreface())) {
+            allBooksVO.setPreface("没有录入相关数据~");
+        }
+        if (StringUtils.isBlank(allBooksVO.getCatalog())) {
+            allBooksVO.setCatalog("没有录入相关数据~");
+        }
+        if (StringUtils.isBlank(allBooksVO.getExcerpt())) {
+            allBooksVO.setExcerpt("没有录入相关数据~");
+        }
+        // 根据分类id从redis查询对应的值
+        Set<ZSetOperations.TypedTuple<String>> classificationZSet = redis.opsForZSet().rangeByScoreWithScores(CATEGORY_ZSET, 0, MAXIMUM_RANGE_OF_CATEGORY_ZSET);
+        Iterator<ZSetOperations.TypedTuple<String>> iterator = classificationZSet.iterator();
+        while (iterator.hasNext()) {
+            ZSetOperations.TypedTuple<String> classification = iterator.next();
+            String classificationStr = classification.getValue();
+            Integer classificationIndex = classification.getScore().intValue();
+            if (allBooksVO.getClassification() != null && allBooksVO.getClassification().equals(classificationIndex)) {
+                allBooksVO.setClassificationStr(classificationStr);
+
+                Set<ZSetOperations.TypedTuple<String>> categoyiesZSet = redis.opsForZSet().rangeByScoreWithScores(CATEGORY_ZSET + ":" + classificationIndex, 0, MAXIMUM_RANGE_OF_CATEGORY_ZSET);
+                Iterator<ZSetOperations.TypedTuple<String>> categoriesIterator = categoyiesZSet.iterator();
+                while (categoriesIterator.hasNext()) {
+                    ZSetOperations.TypedTuple<String> category = categoriesIterator.next();
+                    String categoryStr = category.getValue();
+                    Integer categoryIndex = category.getScore().intValue();
+                    if (allBooksVO.getCategory() != null && allBooksVO.getCategory().equals(categoryIndex)) {
+                        allBooksVO.setCategoryStr(categoryStr);
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        return allBooksVO;
     }
 
     @Override
@@ -148,5 +191,17 @@ public class BookServiceImpl extends BaseService implements BookService {
                 throw new CustomizeException(ErrorEnum.DELETE_BOOK_FAILED);
             }
         }
+    }
+
+    @Override
+    public List<AllBooksVO> getSimilarRecommended(Integer classification) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("classification", classification);
+        queryWrapper.eq("status", BookStatus.ON_THE_SHELVES.getType());
+        queryWrapper.last("limit 0, 10");
+        List<Book> books = bookDao.selectList(queryWrapper);
+        List<AllBooksVO> allBooksVOs = CustomizeBeanUtil.copyListProperties(books, AllBooksVO::new);
+        allBooksVOs.forEach(b -> b.setIdStr(b.getId().toString()));
+        return allBooksVOs;
     }
 }

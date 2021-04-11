@@ -21,6 +21,12 @@ public class BaseService extends ServiceImpl {
     @Autowired
     public StringRedisTemplate redis;
 
+    /**
+     * 书籍分类zset key
+     */
+    public static final String CATEGORY_ZSET = "category_zset";
+    public static final int MAXIMUM_RANGE_OF_CATEGORY_ZSET = 10000;
+
     public PagedResult setterPagedResult(IPage<?> page) {
         PagedResult pagedResult = new PagedResult();
         pagedResult.setCurrent(page.getCurrent());
