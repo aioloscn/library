@@ -33,7 +33,11 @@ public interface ShoppingCartControllerApi {
     @PutMapping
     CommonResponse update(@Valid @RequestBody List<ShoppingCartUpdateBO> shoppingCartUpdateBOs, @RequestHeader("token") String token) throws CustomizeException;
 
-    @ApiOperation(value = "删除购物车中的商品", httpMethod = "DELETE")
+    @ApiOperation(value = "删除购物车中的商品", notes = "批量删除某个用户的N个购物车信息", httpMethod = "DELETE")
     @DeleteMapping
     CommonResponse del(@Valid @RequestBody List<ShoppingCartDeleteBO> shoppingCartDeleteBOs, @RequestHeader("token") String token) throws CustomizeException;
+
+    @ApiOperation(value = "删除书籍对应的所有购物车信息", notes = "用于前端合并展示的购物车信息删除", httpMethod = "DELETE")
+    @DeleteMapping("/deleteByBookId/{bookId}")
+    CommonResponse deleteByBookId(@PathVariable("bookId") Long bookId, @RequestHeader("token") String token) throws CustomizeException;
 }

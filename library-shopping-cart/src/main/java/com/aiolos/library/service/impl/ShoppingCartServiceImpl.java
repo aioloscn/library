@@ -17,15 +17,16 @@ import com.aiolos.library.pojo.vo.ShoppingCartBookVO;
 import com.aiolos.library.service.BaseService;
 import com.aiolos.library.service.ShoppingCartService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -87,6 +88,7 @@ public class ShoppingCartServiceImpl extends BaseService implements ShoppingCart
         List<Book> books = bookControllerApi.getBatchIds(bookIds);
         List<ShoppingCartBookVO> shoppingCartBookVOs = CustomizeBeanUtil.copyListProperties(newShoppingCarts, ShoppingCartBookVO::new);
         shoppingCartBookVOs.forEach(c -> {
+            c.setBookIdStr(c.getBookId().toString());
             books.forEach(b -> {
                 if (c.getBookId().equals(b.getId())) {
                     c.setBook(b);
@@ -120,13 +122,38 @@ public class ShoppingCartServiceImpl extends BaseService implements ShoppingCart
     public void del(List<ShoppingCartDeleteBO> shoppingCartDeleteBOs) throws CustomizeException {
 
         List<ShoppingCart> shoppingCarts = CustomizeBeanUtil.copyListProperties(shoppingCartDeleteBOs, ShoppingCart::new);
+        AtomicInteger affectCount = new AtomicInteger();
+
         shoppingCarts.forEach(cart -> {
             cart.setStatus(ShoppingCartStatus.DELETED.getType());
             cart.setGmtModified(new Date());
+
+            UpdateWrapper<ShoppingCart> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("id", cart.getId());
+            affectCount.addAndGet(shoppingCartDao.update(cart, updateWrapper));
         });
 
-        boolean result = updateBatchById(shoppingCarts);
-        if (!result) {
+        if (affectCount.intValue() != shoppingCarts.size()) {
+            try {
+                throw new RuntimeException();
+            } catch (Exception e) {
+                throw new CustomizeException(ErrorEnum.DELETE_FAILED);
+            }
+        }
+    }
+
+    @Transactional(propagation = Propagation.NESTED, rollbackFor = CustomizeException.class)
+    @Override
+    public void deleteByBookId(Long bookId, Long userId) throws CustomizeException {
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setStatus(ShoppingCartStatus.DELETED.getType());
+        shoppingCart.setGmtModified(new Date());
+
+        UpdateWrapper updateWrapper = new UpdateWrapper();
+        updateWrapper.eq("book_id", bookId);
+        updateWrapper.eq("user_id", userId);
+        int affectCount = shoppingCartDao.update(shoppingCart, updateWrapper);
+        if (affectCount == 0) {
             try {
                 throw new RuntimeException();
             } catch (Exception e) {

@@ -29,6 +29,11 @@ public class ShoppingCartBookVO {
     @Column(name = "book_id")
     private Long bookId;
 
+    /**
+     * 解决前端数字太长丢失精度
+     */
+    private String bookIdStr;
+
     private Book book;
 
     /**

@@ -42,4 +42,6 @@ public interface ShoppingCartService {
      * @return
      */
     void del(List<ShoppingCartDeleteBO> shoppingCartDeleteBOs) throws CustomizeException;
+
+    void deleteByBookId(Long bookId, Long userId) throws CustomizeException;
 }

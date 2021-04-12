@@ -123,4 +123,17 @@ public class ShoppingCartController extends BaseController implements ShoppingCa
         shoppingCartService.del(shoppingCartDeleteBOs);
         return CommonResponse.ok();
     }
+
+    @Override
+    public CommonResponse deleteByBookId(Long bookId, String token) throws CustomizeException {
+        // 查询用户是否存在
+        CommonResponse userResp = userControllerApi.getByToken(token);
+        if (userResp.getCode() == null || userResp.getCode() != HttpStatus.HTTP_OK) {
+            return userResp;
+        }
+        checkIfTheUserExists(userResp);
+        Long userId = jwtUtil.getUserId(token);
+        shoppingCartService.deleteByBookId(bookId, userId);
+        return CommonResponse.ok();
+    }
 }
