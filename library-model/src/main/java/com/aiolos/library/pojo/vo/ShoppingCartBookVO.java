@@ -23,6 +23,8 @@ public class ShoppingCartBookVO {
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "SELECT LAST_INSERT_ID()")
     private Long id;
 
+    private String idStr;
+
     /**
      * 书籍主键
      */

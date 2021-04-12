@@ -88,6 +88,7 @@ public class ShoppingCartServiceImpl extends BaseService implements ShoppingCart
         List<Book> books = bookControllerApi.getBatchIds(bookIds);
         List<ShoppingCartBookVO> shoppingCartBookVOs = CustomizeBeanUtil.copyListProperties(newShoppingCarts, ShoppingCartBookVO::new);
         shoppingCartBookVOs.forEach(c -> {
+            c.setIdStr(c.getId().toString());
             c.setBookIdStr(c.getBookId().toString());
             books.forEach(b -> {
                 if (c.getBookId().equals(b.getId())) {
