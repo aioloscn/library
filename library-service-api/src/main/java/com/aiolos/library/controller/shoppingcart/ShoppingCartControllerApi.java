@@ -29,6 +29,10 @@ public interface ShoppingCartControllerApi {
     @GetMapping
     CommonResponse getByUser(@ApiParam(value = "用户的主键", required = true) @RequestHeader("token") String token);
 
+    @ApiOperation(value = "根据用户信息和书籍Id获取部分购物车信息", notes = "用于全选/部分购物车信息跳转到结算界面", httpMethod = "POST")
+    @PostMapping("/getByBookIds")
+    CommonResponse getByBookIds(@ApiParam(value = "bookIds") @RequestBody(required = false) List<Long> bookIds, @RequestHeader("token") String token);
+
     @ApiOperation(value = "修改购物车信息", httpMethod = "PUT")
     @PutMapping
     CommonResponse update(@Valid @RequestBody List<ShoppingCartUpdateBO> shoppingCartUpdateBOs, @RequestHeader("token") String token) throws CustomizeException;

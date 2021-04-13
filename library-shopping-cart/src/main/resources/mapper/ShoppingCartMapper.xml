@@ -14,4 +14,20 @@
     <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
     <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
   </resultMap>
+    <select id="searchByBookIds" resultMap="BaseResultMap">
+        select
+            id,
+            book_id,
+            user_id,
+            sum(quantity) as quantity,
+            sum(amount) as amount,
+            status
+            from shopping_cart
+        where book_id in
+        <foreach collection="bookIds" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and user_id = #{userId}
+        and status = 1
+    </select>
 </mapper>

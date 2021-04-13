@@ -159,6 +159,7 @@ public class BookServiceImpl extends BaseService implements BookService {
 
     @Override
     public List<Book> searchBatchIds(List<Long> ids) {
+        // 展示包含已下架的书籍，该接口只用在购物车和订单模块调用
         return bookDao.selectBatchIds(ids);
     }
 

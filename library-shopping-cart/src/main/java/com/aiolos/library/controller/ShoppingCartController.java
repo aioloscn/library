@@ -1,6 +1,7 @@
 package com.aiolos.library.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.http.HttpStatus;
 import com.aiolos.common.enums.ErrorEnum;
 import com.aiolos.common.exception.CustomizeException;
@@ -19,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -68,8 +70,19 @@ public class ShoppingCartController extends BaseController implements ShoppingCa
 
     @Override
     public CommonResponse getByUser(String token) {
-        List<ShoppingCartBookVO> shoppingCart = shoppingCartService.getByUserId(jwtUtil.getUserId(token));
-        return CommonResponse.ok(shoppingCart);
+        List<ShoppingCartBookVO> shoppingCartBookVOs = shoppingCartService.getByUserId(jwtUtil.getUserId(token));
+        return CommonResponse.ok(shoppingCartBookVOs);
+    }
+
+    @Override
+    public CommonResponse getByBookIds(List<Long> bookIds, String token) {
+        List<ShoppingCartBookVO> shoppingCartBookVOs = new ArrayList<>();
+        if (ObjectUtil.isNull(bookIds)) {
+            shoppingCartBookVOs = shoppingCartService.getByUserId(jwtUtil.getUserId(token));
+        } else {
+            shoppingCartBookVOs = shoppingCartService.getByBookIds(bookIds, jwtUtil.getUserId(token));
+        }
+        return CommonResponse.ok(shoppingCartBookVOs);
     }
 
     @Override

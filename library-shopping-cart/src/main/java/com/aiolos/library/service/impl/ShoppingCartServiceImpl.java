@@ -96,6 +96,27 @@ public class ShoppingCartServiceImpl extends BaseService implements ShoppingCart
                 }
             });
         });
+
+        shoppingCartBookVOs = shoppingCartBookVOs.stream().filter(o -> !o.getBook().getStatus().equals(BookStatus.DELETED.getType())).collect(Collectors.toList());
+        return shoppingCartBookVOs;
+    }
+
+    @Override
+    public List<ShoppingCartBookVO> getByBookIds(List<Long> bookIds, Long userId) {
+        List<Book> books = bookControllerApi.getBatchIds(bookIds);
+        List<ShoppingCart> shoppingCarts = shoppingCartDao.searchByBookIds(bookIds, userId);
+        List<ShoppingCartBookVO> shoppingCartBookVOs = CustomizeBeanUtil.copyListProperties(shoppingCarts, ShoppingCartBookVO::new);
+        shoppingCartBookVOs.forEach(c -> {
+            c.setIdStr(c.getId().toString());
+            c.setBookIdStr(c.getBookId().toString());
+            books.forEach(b -> {
+                if (c.getBookId().equals(b.getId())) {
+                    c.setBook(b);
+                }
+            });
+        });
+
+        shoppingCartBookVOs = shoppingCartBookVOs.stream().filter(o -> !o.getBook().getStatus().equals(BookStatus.DELETED.getType())).collect(Collectors.toList());
         return shoppingCartBookVOs;
     }
 

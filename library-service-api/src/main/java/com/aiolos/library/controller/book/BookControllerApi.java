@@ -52,7 +52,7 @@ public interface BookControllerApi {
     @GetMapping("/get/{id}")
     CommonResponse getById(@ApiParam(value = "书籍主键", required = true) @PathVariable("id") Long id);
 
-    @ApiOperation(value = "根据书籍主键集合查询书籍信息，用于其他模块远程调用", httpMethod = "POST")
+    @ApiOperation(value = "根据书籍主键集合查询书籍信息，包含下架的书籍，用于其他模块远程调用", httpMethod = "POST")
     @PostMapping("/getBatchIds")
     List<Book> getBatchIds(@RequestBody List<Long> ids);
 
