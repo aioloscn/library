@@ -192,6 +192,7 @@
                 <version>2.4.1</version>
                 <configuration>
                     <mainClass>com.aiolos.library.LibraryApplication</mainClass>
+                    <classifier>execute</classifier>
                 </configuration>
                 <executions>
                     <execution>
