@@ -68,6 +68,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
         User user = new User();
         user.setId(idWorker.nextId());
+        user.setOpenId(idWorker.nextIdStr());
         user.setPhone(phone);
         user.setNickname("用户" + CommonUtils.hidePhoneNo(phone));
         user.setSex(Sex.secret.getValue());
