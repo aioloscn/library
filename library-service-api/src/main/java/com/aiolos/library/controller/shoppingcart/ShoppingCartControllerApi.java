@@ -47,5 +47,5 @@ public interface ShoppingCartControllerApi {
 
     @ApiOperation(value = "下单完成后删除购物车信息", notes = "用户Order模块远程调用", httpMethod = "DELETE")
     @DeleteMapping("/deleteByBookIds")
-    CommonResponse deleteByBookIds(@ApiParam(value = "书籍主键数组") @RequestParam Long[] bookIds, @RequestHeader("token") String token) throws CustomizeException;
+    CommonResponse deleteByBookIds(@ApiParam(value = "书籍主键数组") @RequestParam(required = false) Long[] bookIds, @RequestHeader("token") String token) throws CustomizeException;
 }

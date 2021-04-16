@@ -46,4 +46,6 @@ public interface ShoppingCartService {
     void deleteByBookId(Long bookId, Long userId) throws CustomizeException;
 
     List<ShoppingCartBookVO> getByBookIds(List<Long> bookIds, Long userId);
+
+    List<Long> getCartBookIdsByUserId(Long userId);
 }

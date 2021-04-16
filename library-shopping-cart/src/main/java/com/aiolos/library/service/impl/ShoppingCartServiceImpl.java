@@ -120,6 +120,16 @@ public class ShoppingCartServiceImpl extends BaseService implements ShoppingCart
         return shoppingCartBookVOs;
     }
 
+    @Override
+    public List<Long> getCartBookIdsByUserId(Long userId) {
+        QueryWrapper<ShoppingCart> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId);
+        queryWrapper.eq("status", ShoppingCartStatus.NORMAL.getType());
+        List<ShoppingCart> shoppingCarts = shoppingCartDao.selectList(queryWrapper);
+        List<Long> bookIds = shoppingCarts.stream().map(ShoppingCart::getBookId).collect(Collectors.toList());
+        return bookIds;
+    }
+
     @Transactional(propagation = Propagation.NESTED, rollbackFor = CustomizeException.class)
     @Override
     public void update(List<ShoppingCartUpdateBO> shoppingCartUpdateBOs) throws CustomizeException {

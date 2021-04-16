@@ -77,8 +77,8 @@ public class ShoppingCartController extends BaseController implements ShoppingCa
 
     @Override
     public CommonResponse getByBookIds(Long[] bookIds, String token) {
-        List<ShoppingCartBookVO> shoppingCartBookVOs = new ArrayList<>();
-        if (ObjectUtil.isNull(bookIds)) {
+        List<ShoppingCartBookVO> shoppingCartBookVOs;
+        if (ObjectUtil.isNull(bookIds) || bookIds.length == 0) {
             shoppingCartBookVOs = shoppingCartService.getByUserId(jwtUtil.getUserId(token));
         } else {
             shoppingCartBookVOs = shoppingCartService.getByBookIds(Arrays.asList(bookIds), jwtUtil.getUserId(token));
@@ -160,6 +160,12 @@ public class ShoppingCartController extends BaseController implements ShoppingCa
         }
         checkIfTheUserExists(userResp);
         Long userId = jwtUtil.getUserId(token);
+        if (ObjectUtil.isNull(bookIds) || bookIds.length == 0) {
+            List<Long> bookIdList = shoppingCartService.getCartBookIdsByUserId(userId);
+            for (Long bookId : bookIdList) {
+                shoppingCartService.deleteByBookId(bookId, userId);
+            }
+        }
         for (Long bookId : bookIds) {
             shoppingCartService.deleteByBookId(bookId, userId);
         }
