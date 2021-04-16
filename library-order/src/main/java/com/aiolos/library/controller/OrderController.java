@@ -1,5 +1,6 @@
 package com.aiolos.library.controller;
 
+import cn.hutool.http.HttpStatus;
 import com.aiolos.common.enums.ErrorEnum;
 import com.aiolos.common.exception.CustomizeException;
 import com.aiolos.common.response.CommonResponse;
@@ -41,6 +42,9 @@ public class OrderController extends BaseController implements OrderControllerAp
 
         // 查询用户是否存在
         CommonResponse userResp = userControllerApi.getByToken(token);
+        if (userResp.getCode() == null || userResp.getCode() != HttpStatus.HTTP_OK) {
+            return userResp;
+        }
         checkIfTheUserExists(userResp);
         orderInsertBO.setUserId(jwtUtil.getUserId(token));
 
@@ -78,6 +82,9 @@ public class OrderController extends BaseController implements OrderControllerAp
 
         // 查询用户是否存在
         CommonResponse userResp = userControllerApi.getByToken(token);
+        if (userResp.getCode() == null || userResp.getCode() != HttpStatus.HTTP_OK) {
+            return userResp;
+        }
         checkIfTheUserExists(userResp);
         orderUpdateBO.setUserId(jwtUtil.getUserId(token));
 

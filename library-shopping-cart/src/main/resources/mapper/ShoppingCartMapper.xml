@@ -29,5 +29,6 @@
         </foreach>
         and user_id = #{userId}
         and status = 1
+        group by book_id
     </select>
 </mapper>

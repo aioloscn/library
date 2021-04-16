@@ -14,13 +14,14 @@ import com.aiolos.library.service.OrderService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Aiolos
@@ -43,7 +44,6 @@ public class OrderServiceImpl extends BaseService implements OrderService {
         // 生成订单号
         Long orderNo = idWorker.nextId();
 
-        List<OrderForm> orderForms = new ArrayList<>();
         OrderForm orderForm = BeanUtil.copyProperties(orderInsertBO, OrderForm.class);
         orderForm.setOrderNo(orderNo);
         orderForm.setStatus(OrderStatus.UNPAID.getType());
@@ -52,17 +52,18 @@ public class OrderServiceImpl extends BaseService implements OrderService {
 
         // 取出订单中的每一个书籍对象各生成一条订单数据
         List<OrderInsertBO.OrderBookInsertBO> orderBooks = orderInsertBO.getOrderBookInsertBOs();
+        AtomicInteger resultCount = new AtomicInteger();
         orderBooks.forEach(book -> {
             Long id = idWorker.nextId();
-            orderForm.setId(id);
-            orderForm.setBookId(book.getBookId());
-            orderForm.setQuantity(book.getQuantity());
-            orderForm.setAmount(book.getAmount());
-            orderForms.add(orderForm);
+            OrderForm copyOrder = SerializationUtils.clone(orderForm);
+            copyOrder.setId(id);
+            copyOrder.setBookId(book.getBookId());
+            copyOrder.setQuantity(book.getQuantity());
+            copyOrder.setAmount(book.getAmount());
+            resultCount.addAndGet(orderFormDao.insert(copyOrder));
         });
 
-        boolean result = saveBatch(orderForms);
-        if (!result) {
+        if (resultCount.intValue() != orderBooks.size()) {
             try {
                 throw new RuntimeException();
             } catch (Exception e) {

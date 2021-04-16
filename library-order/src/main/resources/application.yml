@@ -49,7 +49,7 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 6000   # 设置Hystrix超时时间，超过2秒触发降级
+            timeoutInMilliseconds: 6000   # 设置Hystrix超时时间，超过6秒触发降级
 
 feign:
   hystrix:

@@ -14,6 +14,8 @@ spring:
     active: dev
   jpa:
     open-in-view: false   # pom不添加jpa包会报程序包javax.persistence不存在，项目中不用jpa相关功能，关闭项目启动时的jpa警告
+#  main:
+#    allow-bean-definition-overriding: true
 
 mapper:
   mappers: com.aiolos.library.common.MyMapper
@@ -49,7 +51,7 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 6000   # 设置Hystrix超时时间，超过2秒触发降级
+            timeoutInMilliseconds: 6000   # 设置Hystrix超时时间，超过6秒触发降级
 
 feign:
   hystrix:

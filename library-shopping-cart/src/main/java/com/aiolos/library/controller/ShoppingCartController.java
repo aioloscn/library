@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -75,12 +76,12 @@ public class ShoppingCartController extends BaseController implements ShoppingCa
     }
 
     @Override
-    public CommonResponse getByBookIds(List<Long> bookIds, String token) {
+    public CommonResponse getByBookIds(Long[] bookIds, String token) {
         List<ShoppingCartBookVO> shoppingCartBookVOs = new ArrayList<>();
         if (ObjectUtil.isNull(bookIds)) {
             shoppingCartBookVOs = shoppingCartService.getByUserId(jwtUtil.getUserId(token));
         } else {
-            shoppingCartBookVOs = shoppingCartService.getByBookIds(bookIds, jwtUtil.getUserId(token));
+            shoppingCartBookVOs = shoppingCartService.getByBookIds(Arrays.asList(bookIds), jwtUtil.getUserId(token));
         }
         return CommonResponse.ok(shoppingCartBookVOs);
     }
@@ -147,6 +148,21 @@ public class ShoppingCartController extends BaseController implements ShoppingCa
         checkIfTheUserExists(userResp);
         Long userId = jwtUtil.getUserId(token);
         shoppingCartService.deleteByBookId(bookId, userId);
+        return CommonResponse.ok();
+    }
+
+    @Override
+    public CommonResponse deleteByBookIds(Long[] bookIds, String token) throws CustomizeException {
+        // 查询用户是否存在
+        CommonResponse userResp = userControllerApi.getByToken(token);
+        if (userResp.getCode() == null || userResp.getCode() != HttpStatus.HTTP_OK) {
+            return userResp;
+        }
+        checkIfTheUserExists(userResp);
+        Long userId = jwtUtil.getUserId(token);
+        for (Long bookId : bookIds) {
+            shoppingCartService.deleteByBookId(bookId, userId);
+        }
         return CommonResponse.ok();
     }
 }

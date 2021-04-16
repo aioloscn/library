@@ -29,9 +29,9 @@ public interface ShoppingCartControllerApi {
     @GetMapping
     CommonResponse getByUser(@ApiParam(value = "用户的主键", required = true) @RequestHeader("token") String token);
 
-    @ApiOperation(value = "根据用户信息和书籍Id获取部分购物车信息", notes = "用于全选/部分购物车信息跳转到结算界面", httpMethod = "POST")
-    @PostMapping("/getByBookIds")
-    CommonResponse getByBookIds(@ApiParam(value = "bookIds") @RequestBody(required = false) List<Long> bookIds, @RequestHeader("token") String token);
+    @ApiOperation(value = "根据用户信息和书籍Id获取部分购物车信息", notes = "用于全选/部分购物车信息跳转到结算界面", httpMethod = "GET")
+    @GetMapping("/getByBookIds")
+    CommonResponse getByBookIds(@ApiParam(value = "书籍主键数组") @RequestParam(required = false) Long[] bookIds, @RequestHeader("token") String token);
 
     @ApiOperation(value = "修改购物车信息", httpMethod = "PUT")
     @PutMapping
@@ -44,4 +44,8 @@ public interface ShoppingCartControllerApi {
     @ApiOperation(value = "删除书籍对应的所有购物车信息", notes = "用于前端合并展示的购物车信息删除", httpMethod = "DELETE")
     @DeleteMapping("/deleteByBookId/{bookId}")
     CommonResponse deleteByBookId(@PathVariable("bookId") Long bookId, @RequestHeader("token") String token) throws CustomizeException;
+
+    @ApiOperation(value = "下单完成后删除购物车信息", notes = "用户Order模块远程调用", httpMethod = "DELETE")
+    @DeleteMapping("/deleteByBookIds")
+    CommonResponse deleteByBookIds(@ApiParam(value = "书籍主键数组") @RequestParam Long[] bookIds, @RequestHeader("token") String token) throws CustomizeException;
 }

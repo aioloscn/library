@@ -20,7 +20,7 @@ public class OrderInsertBO {
 
     @Data
     @ApiModel(value = "提交的订单中每样商品的购买详情")
-    public class OrderBookInsertBO {
+    public static class OrderBookInsertBO {
 
         @ApiModelProperty(value = "书籍的主键",required = true)
         @NotNull(message = "缺少书籍的主键信息")
