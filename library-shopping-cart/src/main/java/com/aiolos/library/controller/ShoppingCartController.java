@@ -159,8 +159,8 @@ public class ShoppingCartController extends BaseController implements ShoppingCa
             // TODO 从redis中获取
             List<Book> books = bookControllerApi.getBatchIds(bookIds);
             for (ShoppingCart cart : shoppingCarts) {
-                Integer newQuantity = cart.getQuantity() < total ? 0 : cart.getQuantity() - total;
-                total = total < cart.getQuantity() ? 0 : total - cart.getQuantity();
+                Integer newQuantity = shoppingCartUpdateQuantityBO.getQuantity() < total ? 0 : shoppingCartUpdateQuantityBO.getQuantity() - total;
+                total = total < shoppingCartUpdateQuantityBO.getQuantity() ? 0 : total - shoppingCartUpdateQuantityBO.getQuantity();
                 cart.setQuantity(newQuantity);
                 if (total != 0) {
                     List<Book> bookList = books.stream().filter(book -> book.getId().equals(cart.getBookId())).collect(Collectors.toList());
