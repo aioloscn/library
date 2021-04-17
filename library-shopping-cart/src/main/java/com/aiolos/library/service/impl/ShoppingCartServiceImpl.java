@@ -151,6 +151,19 @@ public class ShoppingCartServiceImpl extends BaseService implements ShoppingCart
 
     @Transactional(propagation = Propagation.NESTED, rollbackFor = CustomizeException.class)
     @Override
+    public void update(ShoppingCart shoppingCart) throws CustomizeException {
+        int affectedCount = shoppingCartDao.updateById(shoppingCart);
+        if (affectedCount == 0) {
+            try {
+                throw new RuntimeException();
+            } catch (Exception e) {
+                throw new CustomizeException(ErrorEnum.UPDATE_CART_FAILED);
+            }
+        }
+    }
+
+    @Transactional(propagation = Propagation.NESTED, rollbackFor = CustomizeException.class)
+    @Override
     public void del(List<ShoppingCartDeleteBO> shoppingCartDeleteBOs) throws CustomizeException {
 
         List<ShoppingCart> shoppingCarts = CustomizeBeanUtil.copyListProperties(shoppingCartDeleteBOs, ShoppingCart::new);

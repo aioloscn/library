@@ -5,6 +5,7 @@ import com.aiolos.common.response.CommonResponse;
 import com.aiolos.library.pojo.bo.ShoppingCartDeleteBO;
 import com.aiolos.library.pojo.bo.ShoppingCartInsertBO;
 import com.aiolos.library.pojo.bo.ShoppingCartUpdateBO;
+import com.aiolos.library.pojo.bo.ShoppingCartUpdateQuantityBO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -36,6 +37,10 @@ public interface ShoppingCartControllerApi {
     @ApiOperation(value = "修改购物车信息", httpMethod = "PUT")
     @PutMapping
     CommonResponse update(@Valid @RequestBody List<ShoppingCartUpdateBO> shoppingCartUpdateBOs, @RequestHeader("token") String token) throws CustomizeException;
+
+    @ApiOperation(value = "修改某个商品的信息", httpMethod = "PUT")
+    @PutMapping("/updateBookQuantity")
+    CommonResponse updateBookQuantity(@Valid @RequestBody ShoppingCartUpdateQuantityBO shoppingCartUpdateQuantityBO, @RequestHeader("token") String token) throws CustomizeException;
 
     @ApiOperation(value = "删除购物车中的商品", notes = "批量删除某个用户的N个购物车信息", httpMethod = "DELETE")
     @DeleteMapping

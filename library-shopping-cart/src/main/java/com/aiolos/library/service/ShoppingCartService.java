@@ -36,6 +36,8 @@ public interface ShoppingCartService {
      */
     void update(List<ShoppingCartUpdateBO> shoppingCartUpdateBOs) throws CustomizeException;
 
+    void update(ShoppingCart shoppingCart) throws CustomizeException;
+
     /**
      * 根据主键集合逻辑删除购物车中对应的商品
      * @param shoppingCartDeleteBOs
