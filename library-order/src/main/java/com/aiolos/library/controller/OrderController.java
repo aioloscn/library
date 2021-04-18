@@ -10,6 +10,7 @@ import com.aiolos.library.controller.user.UserControllerApi;
 import com.aiolos.library.pojo.Book;
 import com.aiolos.library.pojo.bo.OrderDeleteBO;
 import com.aiolos.library.pojo.bo.OrderInsertBO;
+import com.aiolos.library.pojo.bo.OrderReceiptBO;
 import com.aiolos.library.pojo.bo.OrderUpdateBO;
 import com.aiolos.library.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
@@ -78,6 +79,17 @@ public class OrderController extends BaseController implements OrderControllerAp
     }
 
     @Override
+    public CommonResponse getByUser(String token) throws CustomizeException {
+        // 查询用户是否存在
+        CommonResponse userResp = userControllerApi.getByToken(token);
+        if (userResp.getCode() == null || userResp.getCode() != HttpStatus.HTTP_OK) {
+            return userResp;
+        }
+        checkIfTheUserExists(userResp);
+        return CommonResponse.ok(orderService.getOrderByUser(jwtUtil.getUserId(token)));
+    }
+
+    @Override
     public CommonResponse update(OrderUpdateBO orderUpdateBO, String token) throws CustomizeException {
 
         // 查询用户是否存在
@@ -118,6 +130,18 @@ public class OrderController extends BaseController implements OrderControllerAp
         checkIfTheUserExists(userResp);
         orderDeleteBO.setUserId(jwtUtil.getUserId(token));
         orderService.del(orderDeleteBO);
+        return CommonResponse.ok();
+    }
+
+    @Override
+    public CommonResponse receipt(OrderReceiptBO orderReceiptBO, String token) throws CustomizeException {
+        // 查询用户是否存在
+        CommonResponse userResp = userControllerApi.getByToken(token);
+        if (userResp.getCode() == null || userResp.getCode() != HttpStatus.HTTP_OK) {
+            return userResp;
+        }
+        checkIfTheUserExists(userResp);
+        orderService.receipt(orderReceiptBO.getOrderNo(), jwtUtil.getUserId(token));
         return CommonResponse.ok();
     }
 }

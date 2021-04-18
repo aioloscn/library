@@ -26,6 +26,10 @@ public interface OrderControllerApi {
     @GetMapping("/{orderNo}")
     CommonResponse get(@ApiParam(value = "订单号") @PathVariable("orderNo") Long orderNo, @RequestHeader("token") String token);
 
+    @ApiOperation(value = "查看用户的所有订单", httpMethod = "GET")
+    @GetMapping("/getByUser")
+    CommonResponse getByUser(@ApiParam(value = "用户token") @RequestHeader("token") String token) throws CustomizeException;
+
     @ApiOperation(value = "修改订单信息", httpMethod = "PUT")
     @PutMapping
     CommonResponse update(@Valid @RequestBody OrderUpdateBO orderUpdateBO, @RequestHeader("token") String token) throws CustomizeException;
@@ -33,4 +37,8 @@ public interface OrderControllerApi {
     @ApiOperation(value = "删除订单", httpMethod = "DELETE")
     @DeleteMapping
     CommonResponse del(@Valid @RequestBody OrderDeleteBO orderDeleteBO, @RequestHeader("token") String token) throws CustomizeException;
+
+    @ApiOperation(value = "确认收货", httpMethod = "PUT")
+    @PutMapping("/receipt")
+    CommonResponse receipt(@Valid @RequestBody OrderReceiptBO orderReceiptBO, @RequestHeader("token") String token) throws CustomizeException;
 }

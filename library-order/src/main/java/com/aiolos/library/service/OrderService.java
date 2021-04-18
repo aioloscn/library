@@ -6,6 +6,7 @@ import com.aiolos.library.pojo.OrderForm;
 import com.aiolos.library.pojo.bo.OrderDeleteBO;
 import com.aiolos.library.pojo.bo.OrderInsertBO;
 import com.aiolos.library.pojo.bo.OrderUpdateBO;
+import com.aiolos.library.pojo.vo.OrderFormVO;
 
 import java.util.List;
 
@@ -30,7 +31,16 @@ public interface OrderService {
      */
     List<OrderForm> getOrderByUser(Long orderNo, Long userId);
 
+    /**
+     * 查询当前用户的所有订单
+     * @param userId
+     * @return
+     */
+    List<OrderFormVO> getOrderByUser(Long userId);
+
     void update(OrderUpdateBO orderUpdateBO) throws CustomizeException;
 
     void del(OrderDeleteBO orderDeleteBO) throws CustomizeException;
+
+    void receipt(Long orderNo, Long userId) throws CustomizeException;
 }
