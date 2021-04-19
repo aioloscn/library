@@ -1,6 +1,10 @@
 package com.aiolos.library.pojo.vo;
 
 import com.aiolos.library.pojo.Book;
+import com.aiolos.library.pojo.helper.LongJsonDeserializer;
+import com.aiolos.library.pojo.helper.LongJsonSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -21,17 +25,17 @@ public class OrderFormVO {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "SELECT LAST_INSERT_ID()")
+    @JsonSerialize(using = LongJsonSerializer.class)
+    @JsonDeserialize(using = LongJsonDeserializer.class)
     private Long id;
-
-    private String idStr;
 
     /**
      * 订单号
      */
     @Column(name = "order_no")
+    @JsonSerialize(using = LongJsonSerializer.class)
+    @JsonDeserialize(using = LongJsonDeserializer.class)
     private Long orderNo;
-
-    private String orderNoStr;
 
     private Book book;
 
@@ -39,14 +43,16 @@ public class OrderFormVO {
      * 书籍主键
      */
     @Column(name = "book_id")
+    @JsonSerialize(using = LongJsonSerializer.class)
+    @JsonDeserialize(using = LongJsonDeserializer.class)
     private Long bookId;
-
-    private String bookIdStr;
 
     /**
      * 用户主键
      */
     @Column(name = "user_id")
+    @JsonSerialize(using = LongJsonSerializer.class)
+    @JsonDeserialize(using = LongJsonDeserializer.class)
     private Long userId;
 
     /**

@@ -98,9 +98,6 @@ public class OrderServiceImpl extends BaseService implements OrderService {
         List<Long> bookIds = orders.stream().map(OrderForm::getBookId).collect(Collectors.toList());
         List<Book> books = bookControllerApi.getBatchIds(bookIds);
         orderFormVOs.forEach(o -> {
-            o.setIdStr(o.getId().toString());
-            o.setBookIdStr(o.getBookId().toString());
-            o.setOrderNoStr(o.getOrderNo().toString());
             if (o.getStatus().equals(OrderStatus.UNPAID.getType())) {
                 o.setOrderStatus(OrderStatus.UNPAID.getValue());
             } else if (o.getStatus().equals(OrderStatus.PAID.getType())) {
