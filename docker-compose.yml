@@ -1,0 +1,52 @@
+version: "3"
+
+services:
+  springcloud-eureka:
+    image: springcloud-eureka:latest
+    ports:
+      - 7000:7000
+    command:
+      - "--eureka.address=192.168.5.17"
+
+  library-zuul-server:
+    image: library-zuul-server:latest
+    ports:
+      - 7070:7070
+    command:
+      - "--eureka.address=192.168.5.17"
+
+  library-user:
+    image: library-user:latest
+    ports:
+      - 8092:8092
+    command:
+      - "--eureka.address=192.168.5.17"
+      - "--mysql.address=192.168.5.17"
+      - "--redis.address=192.168.5.17"
+
+  library-book:
+    image: library-book:latest
+    ports:
+      - 8093:8093
+    command:
+      - "--eureka.address=192.168.5.17"
+      - "--mysql.address=192.168.5.17"
+      - "--redis.address=192.168.5.17"
+
+  library-shopping-cart:
+    image: library-shopping-cart:latest
+    ports:
+      - 8094:8094
+    command:
+      - "--eureka.address=192.168.5.17"
+      - "--mysql.address=192.168.5.17"
+      - "--redis.address=192.168.5.17"
+
+  library-order:
+    image: library-order:latest
+    ports:
+      - 8095:8095
+    command:
+      - "--eureka.address=192.168.5.17"
+      - "--mysql.address=192.168.5.17"
+      - "--redis.address=192.168.5.17"

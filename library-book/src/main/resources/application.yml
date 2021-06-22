@@ -35,12 +35,12 @@ logging:
 eureka:
   instance:
     prefer-ip-address: true
-    ip-address: 127.0.0.1
+    ip-address: ${eureka.address}
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://localhost:7000/eureka/
+      defaultZone: http://${eureka.instance.ip-address}:7000/eureka/
 
 # 配置Hystrix
 hystrix:
