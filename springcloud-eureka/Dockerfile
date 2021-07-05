@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-oraclelinux7
+FROM openjdk:8u181-jdk-alpine
 
 COPY target/springcloud-eureka.jar /springcloud-eureka.jar
 

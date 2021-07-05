@@ -86,13 +86,13 @@ public class UserController extends BaseController implements UserControllerApi 
         }
 
         // 3. 保存用户分布式会话的相关操作
-        // TODO 获取角色权限Set列表
-
-        // 保存token前查看下redis中是否已存在，已存在则不重新set
-        String token = redis.opsForValue().get(user.getId().toString());
+        // 保存token前查看下redis中是否已存在，已存在则不重新set，不覆盖保证7天过期
+        String token = redis.opsForValue().get(LIBRARY_REDIS_USER_TOKEN + ":" + user.getId());
         if (StringUtils.isBlank(token)) {
             token = jwtUtil.createToken(user.getId());
-            saveCacheToken(user.getId(), token);
+            redis.opsForValue().set(token, user.getId() + "", cacheExpire, TimeUnit.DAYS);
+            // 仅仅用作于检查token在redis中是否存在
+            redis.opsForValue().set(LIBRARY_REDIS_USER_TOKEN + ":" + user.getId(), token, cacheExpire, TimeUnit.DAYS);
         }
 
         // 4. 用户登录或注册成功以后，需要删除redis中的短信验证码，验证码只能使用一次
@@ -104,6 +104,11 @@ public class UserController extends BaseController implements UserControllerApi 
     @Override
     public CommonResponse getByToken(String token) {
         return CommonResponse.ok(userService.searchById(jwtUtil.getUserId(token)));
+    }
+
+    @Override
+    public CommonResponse getUserPermissions(Long userId) {
+        return CommonResponse.ok(userService.searchUserPermissions(userId));
     }
 
     @Override

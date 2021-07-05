@@ -16,12 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Aiolos
  * @date 2021/3/19 5:55 下午
  */
-public class UserInterceptor implements HandlerInterceptor {
-
-    @Autowired
-    public StringRedisTemplate redis;
-
-    public static final String MOBILE_SMSCODE = "mobile:smscode";
+public class PassportInterceptor extends BaseInterceptor implements HandlerInterceptor {
 
     /**
      * 拦截请求，访问controller之前

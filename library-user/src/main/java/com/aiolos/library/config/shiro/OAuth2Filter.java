@@ -70,7 +70,7 @@ public class OAuth2Filter extends AuthenticatingFilter {
     }
 
     /**
-     * 拦截请求，判断请求是否需要被Shiro处理
+     * 拦截请求，判断请求是否需要被Shiro处理，如果返回false则会继续调用onAccessDenied方法
      * @param request
      * @param response
      * @param mappedValue
@@ -144,6 +144,7 @@ public class OAuth2Filter extends AuthenticatingFilter {
 
     /**
      * Shiro执行realm里面的认证方法的时候判定用户没有登录或者用户登录失败就会执行这个方法
+     * 在Realm类doGetAuthenticationInfo方法之后执行
      * @param token
      * @param e
      * @param servletRequest
@@ -168,6 +169,11 @@ public class OAuth2Filter extends AuthenticatingFilter {
         return false;
     }
 
+    /**
+     * 从请求中获取token的值
+     * @param request
+     * @return
+     */
     private String getRequestToken(HttpServletRequest request) {
         String token = request.getHeader("token");
         if (StringUtils.isBlank(token)) {

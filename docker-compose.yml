@@ -5,8 +5,8 @@ services:
     image: springcloud-eureka:latest
     ports:
       - 7000:7000
-    command:
-      - "--eureka.address=192.168.5.17"
+    tty: true
+    mem_limit: 256m
 
   library-zuul-server:
     image: library-zuul-server:latest
@@ -14,6 +14,8 @@ services:
       - 7070:7070
     command:
       - "--eureka.address=192.168.5.17"
+    tty: true
+    mem_limit: 256m
 
   library-user:
     image: library-user:latest
@@ -23,6 +25,8 @@ services:
       - "--eureka.address=192.168.5.17"
       - "--mysql.address=192.168.5.17"
       - "--redis.address=192.168.5.17"
+    tty: true
+    mem_limit: 256m
 
   library-book:
     image: library-book:latest
@@ -32,6 +36,8 @@ services:
       - "--eureka.address=192.168.5.17"
       - "--mysql.address=192.168.5.17"
       - "--redis.address=192.168.5.17"
+    tty: true
+    mem_limit: 256m
 
   library-shopping-cart:
     image: library-shopping-cart:latest
@@ -41,6 +47,8 @@ services:
       - "--eureka.address=192.168.5.17"
       - "--mysql.address=192.168.5.17"
       - "--redis.address=192.168.5.17"
+    tty: true
+    mem_limit: 256m
 
   library-order:
     image: library-order:latest
@@ -50,3 +58,5 @@ services:
       - "--eureka.address=192.168.5.17"
       - "--mysql.address=192.168.5.17"
       - "--redis.address=192.168.5.17"
+    tty: true
+    mem_limit: 256m

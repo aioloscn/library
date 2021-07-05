@@ -23,7 +23,7 @@ public interface OrderControllerApi {
     CommonResponse add(@ApiParam(value = "订单信息，包含N个书籍对象信息") @Valid @RequestBody OrderInsertBO orderInsertBO, @RequestHeader("token") String token) throws CustomizeException;
 
     @ApiOperation(value = "查看用户的某个订单", httpMethod = "GET")
-    @GetMapping("/{orderNo}")
+    @GetMapping("/get/{orderNo}")
     CommonResponse get(@ApiParam(value = "订单号") @PathVariable("orderNo") Long orderNo, @RequestHeader("token") String token);
 
     @ApiOperation(value = "查看用户的所有订单", httpMethod = "GET")

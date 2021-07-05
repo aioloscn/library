@@ -34,8 +34,12 @@ public interface UserControllerApi {
     CommonResponse login(@Valid @RequestBody RegisterLoginBO registerLoginBO) throws CustomizeException;
 
     @ApiOperation(value = "查询个人基本信息", httpMethod = "GET")
-    @GetMapping
+    @GetMapping("/get")
     CommonResponse getByToken(@ApiParam(value = "用户的token") @RequestHeader("token") String token);
+
+    @ApiOperation(value = "查询个人操作权限", httpMethod = "GET")
+    @GetMapping("/getUserPermissions")
+    CommonResponse getUserPermissions(@ApiParam(value = "用户的token") @RequestHeader("token") Long userId);
 
     @ApiOperation(value = "登出", httpMethod = "GET")
     @GetMapping("/logout")

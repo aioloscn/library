@@ -1,0 +1,5 @@
+library:
+  jwt:
+    secret: librarysecretsalt
+    expire: 7
+    cache-expire: 10

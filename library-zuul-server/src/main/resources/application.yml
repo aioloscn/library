@@ -18,7 +18,7 @@ logging:
 eureka:
   instance:
     prefer-ip-address: true
-    ip-address: ${eureka.address}
+    ip-address: ${eureka.address:localhost}
   client:
     service-url:
       defaultZone: http://${eureka.instance.ip-address}:7000/eureka/
@@ -28,7 +28,7 @@ zuul:
     error:
       disable: true
   sensitive-headers: Access-Control-Allow-Origin
-  ignored-headers: Access-Control-Allow-Credentials,Access-Control-Allow-Origin,H-APP-Id,Token,APPToken
+  ignored-headers: Access-Control-Allow-Credentials,Access-Control-Allow-Origin # 每次转发都多一次跨域头部信息，忽略掉，不要忽略Token
   routes:
     library-user: /library-user/**
     library-book: /library-book/**               # 实例名: /路径/**

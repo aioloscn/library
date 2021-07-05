@@ -37,6 +37,7 @@ public class OAuth2Realm extends AuthorizingRealm {
 
     /**
      * 认证(验证登录时调用)
+     * Filter类onAccessDenied方法之后执行
      * @param authenticationToken
      * @return
      * @throws AuthenticationException

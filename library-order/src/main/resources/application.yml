@@ -35,7 +35,7 @@ logging:
 eureka:
   instance:
     prefer-ip-address: true
-    ip-address: ${eureka.address}
+    ip-address: ${eureka.address:localhost}
   client:
     register-with-eureka: true
     fetch-registry: true

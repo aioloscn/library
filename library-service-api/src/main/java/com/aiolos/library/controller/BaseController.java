@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class BaseController {
 
     @Value("${library.jwt.cache-expire}")
-    private int cacheExpire;
+    public int cacheExpire;
 
     @Autowired
     public JwtUtil jwtUtil;
@@ -32,13 +32,10 @@ public class BaseController {
     public static final int SMSCODE_EXPIRE_TIME = 60;
 
     public static final String MOBILE_SMSCODE = "mobile:smscode";
+    public static final String LIBRARY_REDIS_USER_TOKEN = "library_redis_user_token";
 
     public static final Integer START_PAGE = 1;
     public static final Integer PAGE_SIZE = 20;
-
-    public void saveCacheToken(long userId, String token) {
-        redis.opsForValue().set(String.valueOf(userId), token, cacheExpire, TimeUnit.DAYS);
-    }
 
     /**
      * 查询用户是否存在
